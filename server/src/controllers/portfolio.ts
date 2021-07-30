@@ -13,6 +13,7 @@ export const portfolios = {
   },
 
   create: async (req: Request, res: Response) => {
+    // check if portfolio name is valid
     if (
       req.body.name === undefined ||
       typeof req.body.name !== 'string' ||
@@ -24,7 +25,7 @@ export const portfolios = {
       return;
     }
     try {
-      const portfolio = await Portfolios.create(req.body);
+      await Portfolios.findOrCreate({ where: req.body });
       res.sendStatus(Status.Created);
     } catch (err) {
       console.log('error at portfolio.create: ', err);
@@ -32,6 +33,7 @@ export const portfolios = {
     }
   },
 
+  addTicker: async (req: Request, res: Response) => {},
   update: async (req: Request, res: Response) => {},
 
   delete: async (req: Request, res: Response) => {},

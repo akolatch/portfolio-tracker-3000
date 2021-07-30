@@ -30,4 +30,12 @@ describe('Portfolio Controllers', () => {
       expect(res.status).toBe(Status.BadRequest);
     }
   });
+
+  it('should create a new portfolio', async () => {
+    await Portfolios.destroy({ where: {} });
+    const numPortfolios = await Portfolios.count({});
+    await request.post('/portfolio').send({ name: 'test' });
+    const portfolios = await Portfolios.findAll();
+    expect(portfolios.length).toEqual(numPortfolios + 1);
+  });
 });
