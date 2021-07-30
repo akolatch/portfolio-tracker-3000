@@ -1,7 +1,8 @@
 import express from 'express';
 import path from 'path';
 import { portfolioRouter, tickerRouter } from './routes';
-
+import { db } from '../database';
+const database = db;
 export const app = express();
 
 app.use(express.json());

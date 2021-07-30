@@ -1,14 +1,14 @@
 {
   "app": {
-    "port": 3000,
+    "port": 5000,
     "admin": {
       "user": "admin",
       "password": "password"
     }
   },
   "database": {
-    "url": "mongodb://localhost/todoTS",
-    "name": "todoTS",
+    "host": "localhost",
+    "name": "tracker3000",
     "user": "root",
     "password": ""
   }
