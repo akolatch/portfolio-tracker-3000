@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import { portfolioRouter, tickerRouter } from './routes';
 import { db } from '../database';
 import morgan from 'morgan';
-
+const database = db;
 // configure env variables with dotenv
 dotenv.config();
 

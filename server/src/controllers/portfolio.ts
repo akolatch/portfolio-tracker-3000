@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
 import { Portfolios, Tickers } from '../models';
 import { Status } from '../constants';
+import { tickerIsInvalid } from './helpers/tickerIsInvalid';
+import { invalidString } from './helpers/invalidString';
 export const portfolios = {
   getAll: async (req: Request, res: Response) => {
     try {
@@ -14,18 +16,15 @@ export const portfolios = {
 
   create: async (req: Request, res: Response) => {
     // check if portfolio name is valid
-    if (
-      req.body.name === undefined ||
-      typeof req.body.name !== 'string' ||
-      req.body.name === ''
-    ) {
+    const name = req.body.name;
+    if (invalidString(name)) {
       res
         .status(Status.BadRequest)
         .json({ message: 'Portfolio name is required' });
       return;
     }
     try {
-      await Portfolios.findOrCreate({ where: req.body });
+      await Portfolios.findOrCreate({ where: { name } });
       res.sendStatus(Status.Created);
     } catch (err) {
       console.log('error at portfolio.create: ', err);
@@ -33,7 +32,18 @@ export const portfolios = {
     }
   },
 
-  addTicker: async (req: Request, res: Response) => {},
+  addTicker: async (req: Request, res: Response) => {
+    // check if ticker is valid
+
+    if (await tickerIsInvalid(res, req.body)) return;
+    try {
+      await Tickers.findOrCreate({ where: req.body });
+      res.sendStatus(Status.Created);
+    } catch (err) {
+      console.log('error at portfolio.addTicker: ', err);
+      res.sendStatus(Status.Error);
+    }
+  },
   update: async (req: Request, res: Response) => {},
 
   delete: async (req: Request, res: Response) => {},

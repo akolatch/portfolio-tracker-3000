@@ -1,6 +1,6 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
-export async function getTicketData(symbol: string) {
+export async function getTicketData(symbol: string): Promise<AxiosResponse> {
   const params = {
     function: 'GLOBAL_QUOTE',
     apikey: process.env.API_KEY,
