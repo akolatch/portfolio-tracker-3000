@@ -117,4 +117,44 @@ describe('Portfolio Controllers', () => {
       .send({ ticker: 'IBM', price: 1, shares: 1 });
     expect(res.status).toBe(Status.Accepted);
   });
+
+  it('should delete the portfolio', async () => {
+    const portfolio = await Portfolios.findOne({ where: { name: 'test' } });
+    const id = portfolio?.getDataValue('id');
+    const res = await request.delete(`/portfolio/${id}`);
+    expect(res.status).toBe(Status.Accepted);
+    const portfolioCount = await Portfolios.count({ where: { name: 'test' } });
+    expect(portfolioCount).toEqual(0);
+  });
+
+  it('should delete all tickers in the portfolio', async () => {
+    const portfolio = await Portfolios.create({ name: 'test' });
+    const id = portfolio?.getDataValue('id');
+    await Tickers.create({
+      ticker: 'IBM',
+      price: 1,
+      shares: 1,
+      portfolioId: id,
+    });
+    await Tickers.create({
+      ticker: 'AAPL',
+      price: 1,
+      shares: 1,
+      portfolioId: id,
+    });
+    await Tickers.create({
+      ticker: 'MSFT',
+      price: 1,
+      shares: 1,
+      portfolioId: id,
+    });
+    const tickersCount = await Tickers.count({ where: { portfolioId: id } });
+    expect(tickersCount).toBe(3);
+    const res = await request.delete(`/portfolio/${id}`);
+    expect(res.status).toBe(Status.Accepted);
+    const tickersCountAfter = await Tickers.count({
+      where: { portfolioId: id },
+    });
+    expect(tickersCountAfter).toEqual(0);
+  });
 });

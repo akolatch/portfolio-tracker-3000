@@ -68,5 +68,22 @@ export const portfolio = {
   getPortfolio: async (req: Request, res: Response) => {},
 
   // DELETE /portfolios/:id delete a portfolio
-  delete: async (req: Request, res: Response) => {},
+  delete: async (req: Request, res: Response) => {
+    const portfolioId = req.params.id;
+    const exists = await Portfolios.findByPk(portfolioId);
+    if (exists === null) {
+      res.status(Status.NotFound).json({ message: 'Portfolio not found' });
+      return;
+    }
+    try {
+      await Portfolios.destroy({
+        where: { id: portfolioId },
+        cascade: true,
+      });
+      res.sendStatus(Status.Accepted);
+    } catch (err) {
+      console.log('error at portfolio.delete: ', err);
+      res.sendStatus(Status.Error);
+    }
+  },
 };

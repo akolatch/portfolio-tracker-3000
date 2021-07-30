@@ -5,4 +5,8 @@ export const portfolioRouter = Router();
 
 portfolioRouter.route('/').get(portfolio.getAll).post(portfolio.create);
 
-portfolioRouter.route('/:id').get().post(portfolio.addTicker).delete();
+portfolioRouter
+  .route('/:id')
+  .get()
+  .post(portfolio.addTicker)
+  .delete(portfolio.delete);
