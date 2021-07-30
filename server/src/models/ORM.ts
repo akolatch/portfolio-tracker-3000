@@ -1,10 +1,10 @@
 import { Sequelize } from 'sequelize';
-import config from 'config';
+import { database } from '../../config/database';
 
 export const ORM = new Sequelize(
-  config.get('database.name'),
-  config.get('database.user'),
-  config.get('database.password'),
+  database.host,
+  database.user,
+  database.password,
   {
     dialect: 'mysql',
   }
