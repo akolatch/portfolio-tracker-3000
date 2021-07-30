@@ -1,0 +1,15 @@
+{
+  "app": {
+    "port": 3000,
+    "admin": {
+      "user": "admin",
+      "password": "password"
+    }
+  },
+  "database": {
+    "url": "mongodb://localhost/todoTS",
+    "name": "todoTS",
+    "user": "root",
+    "password": ""
+  }
+}
