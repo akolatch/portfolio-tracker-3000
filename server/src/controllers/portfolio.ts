@@ -3,7 +3,8 @@ import { Portfolios, Tickers } from '../models';
 import { Status } from '../constants';
 import { tickerIsInvalid } from './helpers/tickerIsInvalid';
 import { invalidString } from './helpers/invalidString';
-export const portfolios = {
+export const portfolio = {
+  // GET /portfolios return a list of all portfolios
   getAll: async (req: Request, res: Response) => {
     try {
       const portfolios = await Portfolios.findAll();
@@ -14,6 +15,7 @@ export const portfolios = {
     }
   },
 
+  // POST /portfolios create a new portfolio
   create: async (req: Request, res: Response) => {
     // check if portfolio name is valid
     const name = req.body.name;
@@ -32,6 +34,7 @@ export const portfolios = {
     }
   },
 
+  // POST /portfolios/:id add a ticker to a portfolio
   addTicker: async (req: Request, res: Response) => {
     const id = req.params.id;
     const exists = await Portfolios.findByPk(id);
@@ -52,7 +55,10 @@ export const portfolios = {
       res.sendStatus(Status.Error);
     }
   },
-  update: async (req: Request, res: Response) => {},
 
+  // GET /portfolios/:id return a portfolio with all its tickers
+  getPortfolio: async (req: Request, res: Response) => {},
+
+  // DELETE /portfolios/:id delete a portfolio
   delete: async (req: Request, res: Response) => {},
 };

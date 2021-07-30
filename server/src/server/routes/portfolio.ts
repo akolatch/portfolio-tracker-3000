@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import { portfolios } from '../../controllers';
+import { portfolio as portfolio } from '../../controllers';
 
 export const portfolioRouter = Router();
 
-portfolioRouter.route('/').get(portfolios.getAll).post(portfolios.create);
+portfolioRouter.route('/').get(portfolio.getAll).post(portfolio.create);
 
-portfolioRouter.route('/:id').get().post(portfolios.addTicker).put().delete();
+portfolioRouter.route('/:id').get().post(portfolio.addTicker).delete();
