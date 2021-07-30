@@ -36,8 +36,8 @@ export const portfolio = {
 
   // POST /portfolios/:id add a ticker to a portfolio
   addTicker: async (req: Request, res: Response) => {
-    const id = req.params.id;
-    const exists = await Portfolios.findByPk(id);
+    const portfolioId = req.params.id;
+    const exists = await Portfolios.findByPk(portfolioId);
     if (exists === null) {
       res.status(Status.NotFound).json({ message: 'Portfolio not found' });
       return;
@@ -48,7 +48,15 @@ export const portfolio = {
     const { ticker, shares, price } = req.body;
 
     try {
-      await Tickers.findOrCreate({ where: req.body });
+      const [, newTicker] = await Tickers.findOrCreate({
+        where: { ticker, portfolioId },
+        defaults: { shares, price },
+      });
+      // console.log(newTicker[1]);
+      if (!newTicker) {
+        res.status(Status.Accepted).json({ message: 'Ticker already exists' });
+        return;
+      }
       res.sendStatus(Status.Created);
     } catch (err) {
       console.log('error at portfolio.addTicker: ', err);

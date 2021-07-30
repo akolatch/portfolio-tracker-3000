@@ -1,7 +1,8 @@
 import { app } from '../src/server/app';
 import supertest from 'supertest';
 import { Status } from '../src/constants';
-import { Portfolios } from '../src/models';
+import { Portfolios, Tickers } from '../src/models';
+import { where } from 'sequelize/types';
 const request = supertest(app);
 
 describe('Portfolio Controllers', () => {
@@ -32,7 +33,7 @@ describe('Portfolio Controllers', () => {
   });
 
   it('should create a new portfolio', async () => {
-    await Portfolios.destroy({ where: {} });
+    await Portfolios.destroy({ where: { name: 'test' } });
     const numPortfolios = await Portfolios.count({});
     await request.post('/portfolio').send({ name: 'test' });
     const portfolios = await Portfolios.findAll();
@@ -46,9 +47,8 @@ describe('Portfolio Controllers', () => {
   });
 
   it('should reject invalid ticker', async () => {
-    await Portfolios.destroy({ where: {} });
-    const portfolio = await Portfolios.create({ name: 'test' });
-    const id = portfolio.getDataValue('id');
+    const portfolio = await Portfolios.findOne({ where: { name: 'test' } });
+    const id = portfolio?.getDataValue('id');
     const invalidTicker = [
       { price: 1, shares: 1 },
       { ticker: '', price: 1, shares: 1 },
@@ -61,9 +61,8 @@ describe('Portfolio Controllers', () => {
   });
 
   it('should reject invalid price', async () => {
-    await Portfolios.destroy({ where: {} });
-    const portfolio = await Portfolios.create({ name: 'test' });
-    const id = portfolio.getDataValue('id');
+    const portfolio = await Portfolios.findOne({ where: { name: 'test' } });
+    const id = portfolio?.getDataValue('id');
     const invalidPrice = [
       { ticker: 'IBM', shares: 1 },
       { ticker: 'IBM', price: '', shares: 1 },
@@ -76,9 +75,8 @@ describe('Portfolio Controllers', () => {
   });
 
   it('should reject invalid shares', async () => {
-    await Portfolios.destroy({ where: {} });
-    const portfolio = await Portfolios.create({ name: 'test' });
-    const id = portfolio.getDataValue('id');
+    const portfolio = await Portfolios.findOne({ where: { name: 'test' } });
+    const id = portfolio?.getDataValue('id');
     const invalidShares = [
       { ticker: 'IBM', price: 1 },
       { ticker: 'IBM', price: 1, shares: '' },
@@ -91,23 +89,32 @@ describe('Portfolio Controllers', () => {
   });
 
   it('should return 404 not found if ticker Symbol is invalid', async () => {
-    await Portfolios.destroy({ where: {} });
-    const portfolio = await Portfolios.create({ name: 'test' });
-    const id = portfolio.getDataValue('id');
+    const portfolio = await Portfolios.findOne({ where: { name: 'test' } });
+    const id = portfolio?.getDataValue('id');
     const res = await request
       .post(`/portfolio/${id}`)
       .send({ ticker: 'bbbbbbbbb', price: 1, shares: 1 });
     expect(res.status).toBe(Status.NotFound);
   });
+
+  it('should save a ticker', async () => {
+    const portfolio = await Portfolios.findOne({ where: { name: 'test' } });
+    const id = portfolio?.getDataValue('id');
+    await Tickers.destroy({ where: { portfolioId: id } });
+    const res = await request
+      .post(`/portfolio/${id}`)
+      .send({ ticker: 'IBM', price: 1, shares: 1 });
+    expect(res.status).toBe(Status.Created);
+    const ticker = await Tickers.findOne({ where: { ticker: 'IBM' } });
+    expect(ticker).toBeDefined();
+  });
+
+  it('should return accepted if ticker already exists', async () => {
+    const portfolio = await Portfolios.findOne({ where: { name: 'test' } });
+    const id = portfolio?.getDataValue('id');
+    const res = await request
+      .post(`/portfolio/${id}`)
+      .send({ ticker: 'IBM', price: 1, shares: 1 });
+    expect(res.status).toBe(Status.Accepted);
+  });
 });
-const invalidTicker = [
-  {},
-  { ticker: '' },
-  { ticker: '', price: 1 },
-  { price: 1, shares: 1 },
-  { ticker: '', price: 1, shares: 1 },
-  { ticker: 'IBM', price: '', shares: 1 },
-  { ticker: 'IBM', price: 0, shares: 1 },
-  { ticker: 'IBM', price: 1, shares: 0 },
-  { ticker: 'IBM', price: 1, shares: '' },
-];
