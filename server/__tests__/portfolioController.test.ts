@@ -22,4 +22,12 @@ describe('Portfolio Controllers', () => {
     expect(res.body[0].name).toEqual('test');
     expect(res.body[0].id).toBeDefined();
   });
+
+  it('should reject a post request with an invalid body', async () => {
+    const invalidBody = [{}, { name: 0 }, { name: '' }];
+    for (const invalid of invalidBody) {
+      const res = await request.post('/portfolio').send(invalid);
+      expect(res.status).toBe(Status.BadRequest);
+    }
+  });
 });

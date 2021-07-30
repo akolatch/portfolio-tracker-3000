@@ -3,6 +3,6 @@ import { portfolios } from '../../controllers';
 
 export const portfolioRouter = Router();
 
-portfolioRouter.route('/').get(portfolios.getAll).post();
+portfolioRouter.route('/').get(portfolios.getAll).post(portfolios.create);
 
 portfolioRouter.route('/:id').get().post().put().delete();

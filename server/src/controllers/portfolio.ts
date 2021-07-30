@@ -12,7 +12,25 @@ export const portfolios = {
     }
   },
 
-  create: async (req: Request, res: Response) => {},
+  create: async (req: Request, res: Response) => {
+    if (
+      req.body.name === undefined ||
+      typeof req.body.name !== 'string' ||
+      req.body.name === ''
+    ) {
+      res
+        .status(Status.BadRequest)
+        .json({ message: 'Portfolio name is required' });
+      return;
+    }
+    try {
+      const portfolio = await Portfolios.create(req.body);
+      res.sendStatus(Status.Created);
+    } catch (err) {
+      console.log('error at portfolio.create: ', err);
+      res.sendStatus(Status.Error);
+    }
+  },
 
   update: async (req: Request, res: Response) => {},
 
