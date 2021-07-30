@@ -33,9 +33,17 @@ export const portfolios = {
   },
 
   addTicker: async (req: Request, res: Response) => {
+    const id = req.params.id;
+    const exists = await Portfolios.findByPk(id);
+    if (exists === null) {
+      res.status(Status.NotFound).json({ message: 'Portfolio not found' });
+      return;
+    }
     // check if ticker is valid
-
     if (await tickerIsInvalid(res, req.body)) return;
+
+    const { ticker, shares, price } = req.body;
+
     try {
       await Tickers.findOrCreate({ where: req.body });
       res.sendStatus(Status.Created);

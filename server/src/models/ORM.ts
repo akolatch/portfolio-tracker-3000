@@ -7,5 +7,6 @@ export const ORM = new Sequelize(
   database.password,
   {
     dialect: 'mysql',
+    logging: false,
   }
 );

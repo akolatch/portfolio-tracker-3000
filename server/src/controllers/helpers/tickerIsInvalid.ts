@@ -3,12 +3,13 @@ import { Response } from 'express';
 import { ITicker } from '../../types';
 import { Status } from '../../constants';
 import { invalidString } from './invalidString';
+import { invalidNumber } from './invalidNumber';
 
 export async function tickerIsInvalid(
   res: Response,
   { ticker, shares, price }: ITicker
 ) {
-  if (typeof shares !== 'number' || typeof price !== 'number') {
+  if (invalidNumber(shares) || invalidNumber(price)) {
     res.status(Status.BadRequest).json({
       message: 'One or more attribute of your ticker data was missing',
     });
@@ -22,7 +23,7 @@ export async function tickerIsInvalid(
   }
 
   const { data } = await getTicketData(ticker);
-  if (data['Global Quote'] === {}) {
+  if (Object.keys(data['Global Quote']).length === 0) {
     res
       .status(Status.NotFound)
       .json({ message: 'Could not find the ticker you were looking for' });
