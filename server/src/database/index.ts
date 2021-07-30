@@ -3,7 +3,7 @@ import mysql from 'mysql2';
 import { database } from '../../config/database';
 
 const connection = mysql.createConnection({
-  host: database.host,
+  // host: database.host,
   user: database.user,
   password: database.password,
 });
@@ -15,8 +15,8 @@ db.connect()
   .then(() => db.query(`CREATE DATABASE IF NOT EXISTS ${database.name}`))
   .then(() => db.query(`USE ${database.name}`))
   .then(() => {
-    models.Portfolios.sync({ force: true });
-    models.Tickers.sync({ force: true });
+    models.Portfolios.sync();
+    models.Tickers.sync();
   })
   .catch((err) => {
     console.log(err);
