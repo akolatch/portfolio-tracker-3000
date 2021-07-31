@@ -69,4 +69,20 @@ describe('TickerController', () => {
     expect(res.status).toBe(Status.NoContent);
     await Tickers.destroy({ where: {} });
   });
+
+  it('should delete a ticker', async () => {
+    const portfolio = await Portfolios.findAll({ where: { name: 'test' } });
+    const portfolioId = portfolio[0]?.getDataValue('id');
+    const ticker = await Tickers.create({
+      ticker: 'IBM',
+      price: 1,
+      shares: 1,
+      portfolioId,
+    });
+    const tickerId = ticker?.getDataValue('id');
+    const res = await request.delete(`/ticker/${tickerId}`);
+    expect(res.status).toBe(Status.Accepted);
+    const tickerAfter = await Tickers.findByPk(tickerId);
+    expect(tickerAfter).toBeNull();
+  });
 });
