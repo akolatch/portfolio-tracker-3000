@@ -88,6 +88,7 @@ export const portfolio = {
           // console.log(Object.keys(data['Global Quote'])[4]);
           const currentPrice = Object.values(data['Global Quote'])[4];
           return {
+            id: ticker.getDataValue('id'),
             ticker: symbol,
             currentPrice: currentPrice,
             shares: ticker.getDataValue('shares'),
@@ -96,7 +97,6 @@ export const portfolio = {
           };
         })
       );
-
       res.status(Status.OK).json(portfolio);
     } catch (err) {
       console.log('error at portfolio.getPortfolioById: ', err);
