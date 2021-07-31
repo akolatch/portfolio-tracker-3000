@@ -11,10 +11,12 @@ function App(): React.ReactElement {
     null
   );
   useEffect(() => {
-    fetch('/portfolio')
-      .then((response) => response.json())
-      .then((data) => setPortfolioList(data))
-      .catch((error) => console.log(error));
+    const fetchPortfolioList = async () => {
+      const response = await fetch('/portfolio');
+      const data = await response.json();
+      setPortfolioList(data);
+    };
+    fetchPortfolioList();
   }, []);
 
   return (
