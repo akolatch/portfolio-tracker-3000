@@ -1,14 +1,14 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { useTextInputs } from '../../hooks/useTextInputs';
+import { useFormInputs } from '../../hooks/useFormInputs';
 import { TextInput } from '../TextInput/TextInput';
 
 export function AddPortfolio() {
-  const [formValue, setFormValue] = useTextInputs({ name: '' });
+  const [formValue, setFormValue, invalidForm] = useFormInputs({ name: '' });
   const history = useHistory();
   const submitForm = async (e: React.MouseEvent) => {
     e.preventDefault();
-    if (formValue.name.length === 0) return;
+    if (invalidForm(formValue)) return;
     try {
       await fetch('/portfolio', {
         method: 'POST',

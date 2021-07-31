@@ -9,11 +9,18 @@ interface PortfolioValues {
 
 export function useFetchPortfolio(
   id: number
-): [PortfolioData[], PortfolioValues, boolean, string] {
+): [
+  PortfolioData[],
+  PortfolioValues,
+  boolean,
+  string,
+  boolean,
+  React.Dispatch<React.SetStateAction<boolean>>
+] {
   const [portfolioData, setPortfolioData] = useState<PortfolioData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
-
+  const [inUpdate, setInUpdate] = useState(false);
   const [sums, setSums] = useState<PortfolioValues>({
     paid: 0,
     value: 0,
@@ -44,9 +51,11 @@ export function useFetchPortfolio(
       }
       setIsLoading(false);
     };
-    fetchPortfolio();
+    if (!inUpdate) {
+      fetchPortfolio();
+    }
     return () => {};
-  }, [id]);
+  }, [inUpdate, id]);
 
-  return [portfolioData, sums, isLoading, error];
+  return [portfolioData, sums, isLoading, error, inUpdate, setInUpdate];
 }

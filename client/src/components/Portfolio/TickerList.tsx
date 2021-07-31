@@ -10,7 +10,7 @@ export function TickerList({ tickerList }: Props) {
     <div>
       <ul>
         {tickerList.map((ticker) => (
-          <TickerListItem key={ticker.ticker} ticker={ticker} />
+          <TickerListItem key={ticker.id} ticker={ticker} />
         ))}
       </ul>
     </div>

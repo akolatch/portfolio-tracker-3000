@@ -7,6 +7,7 @@ interface Props {
   name?: string;
   placeholder?: string;
   mandatory?: boolean;
+  type?: string;
   validateForm?: (value: string) => boolean;
 }
 export function TextInput({
@@ -16,6 +17,7 @@ export function TextInput({
   placeholder = '',
   name,
   mandatory = true,
+  type = 'text',
 }: Props): React.ReactElement<any> {
   const [invalid, setInvalid] = useState(false);
 
@@ -31,7 +33,7 @@ export function TextInput({
     <div className={invalid ? 'text-input-invalid' : 'text-input'}>
       <label htmlFor={name}>{label}</label>
       <input
-        type='text'
+        type={type}
         name={name || label}
         value={value}
         placeholder={placeholder}

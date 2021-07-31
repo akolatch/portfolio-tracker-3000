@@ -47,19 +47,23 @@ export const portfolio = {
         return;
       }
       // check if ticker is valid
-      if (await tickerIsInvalid(res, req.body)) return;
-
-      const { ticker, shares, price } = req.body;
+      const { ticker } = req.body;
+      const updates = {
+        shares: parseInt(req.body.shares, 10),
+        price: parseFloat(req.body.price),
+      };
+      if (await tickerIsInvalid(res, { ticker, ...updates })) return;
 
       const [, newTicker] = await Tickers.findOrCreate({
         where: { ticker, portfolioId },
-        defaults: { shares, price },
+        defaults: updates,
       });
       // console.log(newTicker[1]);
       if (!newTicker) {
         res.status(Status.Accepted).json({ message: 'Ticker already exists' });
         return;
       }
+      console.log('here');
       res.sendStatus(Status.Created);
     } catch (err) {
       console.log('error at portfolio.addTicker: ', err);

@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useFetchPortfolio } from '../../hooks/useFetchPortfolio';
+import { AddTicker } from '../AddTicker/AddTicker';
 import { TickerList } from './TickerList';
 
 interface Props {
@@ -8,7 +9,8 @@ interface Props {
   id?: number;
 }
 export default function Portfolio({ name, id = 0 }: Props): React.ReactElement {
-  const [portfolioData, sums, isLoading, error] = useFetchPortfolio(id);
+  const [portfolioData, sums, isLoading, error, inUpdate, setInUpdate] =
+    useFetchPortfolio(id);
   const history = useHistory();
   const deletePortfolio = async () => {
     await fetch(`/portfolio/${id}`, {
@@ -33,6 +35,11 @@ export default function Portfolio({ name, id = 0 }: Props): React.ReactElement {
             <div>{`Total Profit: $${sums.profit}`}</div>
           </div>
         </div>
+      )}
+      {inUpdate ? (
+        <AddTicker portfolioId={id} setShowAddForm={setInUpdate} />
+      ) : (
+        <button onClick={() => setInUpdate(true)}>Add Stock</button>
       )}
       <button onClick={deletePortfolio}>Delete</button>
     </div>
