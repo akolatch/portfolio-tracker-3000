@@ -4,12 +4,21 @@ import { Portfolio } from '../../types';
 
 interface Props {
   portfolio: Portfolio;
+  setSelectedPortfolio: React.Dispatch<React.SetStateAction<Portfolio | null>>;
 }
 
-export function PortfolioListItem({ portfolio }: Props): React.ReactElement {
+export function PortfolioListItem({
+  portfolio,
+  setSelectedPortfolio,
+}: Props): React.ReactElement {
   return (
     <li>
-      <Link to={`/portfolio/${portfolio.id}`}>{portfolio.name}</Link>
+      <Link
+        to={`/portfolio/${portfolio.id}`}
+        onClick={() => setSelectedPortfolio(portfolio)}
+      >
+        {portfolio.name}
+      </Link>
     </li>
   );
 }

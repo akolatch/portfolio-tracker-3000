@@ -7,7 +7,9 @@ import { PortfolioList } from '../PorfolioList/PortfolioList';
 
 function App(): React.ReactElement {
   const [portfolioList, setPortfolioList] = useState<Portfolio[]>([]);
-
+  const [selectedPortfolio, setSelectedPortfolio] = useState<Portfolio | null>(
+    null
+  );
   useEffect(() => {
     fetch('/portfolio')
       .then((response) => response.json())
@@ -19,8 +21,11 @@ function App(): React.ReactElement {
     <Router>
       <div>
         <h1>Portfolio Tracker 3000</h1>
-        <PortfolioList portfolioList={portfolioList} />
         <Link to='/portfolio/new'>Add Portfolio</Link>
+        <PortfolioList
+          portfolioList={portfolioList}
+          setSelectedPortfolio={setSelectedPortfolio}
+        />
         <main>
           <Switch>
             <Route path='/portfolio/new' exact>
