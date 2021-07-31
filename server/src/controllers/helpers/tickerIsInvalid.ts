@@ -23,7 +23,7 @@ export async function tickerIsInvalid(
   }
 
   const { data } = await getTicketData(ticker);
-  if (Object.keys(data['Global Quote']).length === 0) {
+  if (!data || JSON.stringify(data['Global Quote']) === '{}') {
     res
       .status(Status.NotFound)
       .json({ message: 'Could not find the ticker you were looking for' });

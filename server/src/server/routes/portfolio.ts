@@ -7,6 +7,6 @@ portfolioRouter.route('/').get(portfolio.getAll).post(portfolio.create);
 
 portfolioRouter
   .route('/:id')
-  .get()
+  .get(portfolio.getById)
   .post(portfolio.addTicker)
   .delete(portfolio.delete);

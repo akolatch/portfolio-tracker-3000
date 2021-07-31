@@ -3,6 +3,9 @@ import { Portfolios, Tickers } from '../models';
 import { Status } from '../constants';
 import { tickerIsInvalid } from './helpers/tickerIsInvalid';
 import { invalidString } from './helpers/invalidString';
+
+import { getTicketData } from '../lib/getTicketData';
+
 export const portfolio = {
   // GET /portfolios return a list of all portfolios
   getAll: async (req: Request, res: Response) => {
@@ -65,7 +68,41 @@ export const portfolio = {
   },
 
   // GET /portfolios/:id return a portfolio with all its tickers
-  getPortfolio: async (req: Request, res: Response) => {},
+  getById: async (req: Request, res: Response) => {
+    const portfolioId = req.params.id;
+    try {
+      // get all tickers where id = portfolioId
+      const portfolioTickers = await Tickers.findAll({
+        where: { portfolioId },
+      });
+      if (portfolioTickers.length === 0) {
+        res
+          .status(Status.NotFound)
+          .json({ message: 'Portfolio appears empty' });
+        return;
+      }
+      const portfolio = await Promise.all(
+        portfolioTickers.map(async (ticker) => {
+          const symbol = ticker.getDataValue('ticker');
+          const { data } = await getTicketData(symbol);
+          // console.log(Object.keys(data['Global Quote'])[4]);
+          const currentPrice = Object.values(data['Global Quote'])[4];
+          return {
+            ticker: symbol,
+            currentPrice: currentPrice,
+            shares: ticker.getDataValue('shares'),
+            price: ticker.getDataValue('price'),
+            createdAt: ticker.getDataValue('createdAt'),
+          };
+        })
+      );
+
+      res.status(Status.OK).json(portfolio);
+    } catch (err) {
+      console.log('error at portfolio.getPortfolioById: ', err);
+      res.sendStatus(Status.Error);
+    }
+  },
 
   // DELETE /portfolios/:id delete a portfolio
   delete: async (req: Request, res: Response) => {

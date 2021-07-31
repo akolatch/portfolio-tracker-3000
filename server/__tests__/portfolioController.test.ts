@@ -2,7 +2,6 @@ import { app } from '../src/server/app';
 import supertest from 'supertest';
 import { Status } from '../src/constants';
 import { Portfolios, Tickers } from '../src/models';
-import { where } from 'sequelize/types';
 const request = supertest(app);
 
 describe('Portfolio Controllers', () => {
@@ -88,7 +87,7 @@ describe('Portfolio Controllers', () => {
     }
   });
 
-  it('should return 404 not found if ticker Symbol is invalid', async () => {
+  xit('should return 404 not found if ticker Symbol is invalid', async () => {
     const portfolio = await Portfolios.findOne({ where: { name: 'test' } });
     const id = portfolio?.getDataValue('id');
     const res = await request
@@ -156,5 +155,27 @@ describe('Portfolio Controllers', () => {
       where: { portfolioId: id },
     });
     expect(tickersCountAfter).toEqual(0);
+  });
+  xit('should get a portfolios tickets', async () => {
+    const portfolio = await Portfolios.create({ name: 'test' });
+    const id = portfolio?.getDataValue('id');
+    await Tickers.create({
+      ticker: 'IBM',
+      price: 1,
+      shares: 1,
+      portfolioId: id,
+    });
+    await Tickers.create({
+      ticker: 'HAS',
+      price: 1,
+      shares: 1,
+      portfolioId: id,
+    });
+
+    const res = await request.get(`/portfolio/${id}`);
+    expect(res.status).toBe(Status.OK);
+    const tickers = res.body;
+    expect(tickers).toBeDefined();
+    expect(tickers.length).toBe(2);
   });
 });
