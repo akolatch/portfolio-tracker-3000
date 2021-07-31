@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useFetchPortfolio } from '../../hooks/useFetchPortfolio';
-import { AddTicker } from '../AddTicker/AddTicker';
+import { AddTicker } from './AddTicker/AddTicker';
 import { TickerList } from './TickerList';
 
 interface Props {

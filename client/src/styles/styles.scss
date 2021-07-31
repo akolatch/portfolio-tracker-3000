@@ -1,0 +1,43 @@
+@import './colors.scss';
+@import './mixins.scss';
+
+body {
+  margin: 0;
+  color: $gray-90;
+  font-family: 'Roboto', sans-serif;
+  // -webkit-font-smoothing: antialiased;
+  // -moz-osx-font-smoothing: grayscale;
+}
+
+.button,
+button,
+input[type='button'],
+input[type='reset'],
+input[type='submit'] {
+  border: none;
+  margin: 1em;
+  color: $white;
+  padding: 0.75em 1.5em;
+  background-color: $blue-60;
+  &:hover {
+    background-color: $blue-70;
+  }
+}
+
+input[type='text'],
+input[type='date'],
+textarea,
+select {
+  border: none;
+  border-bottom: 2px solid $gray-50;
+  background-color: $gray-10;
+  padding: 0.75em 1.5em;
+  &::placeholder {
+    color: $gray-50;
+  }
+}
+
+a {
+  color: black;
+  text-decoration: none;
+}

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useFormInputs } from '../../hooks/useFormInputs';
-import { TextInput } from '../TextInput/TextInput';
+import { useFormInputs } from '../../../hooks/useFormInputs';
+import { TextInput } from '../../TextInput/TextInput';
 
 interface Props {
   portfolioId: number;
@@ -17,7 +17,7 @@ export function AddTicker({
     shares: '0',
   });
   const [warning, setWarning] = useState('');
-
+  const [date, setDate] = useState('2021-07-22');
   const submitForm = async (e: React.MouseEvent) => {
     e.preventDefault();
     if (invalidForm(formValue)) {
@@ -76,7 +76,14 @@ export function AddTicker({
           value={formValue.shares}
           type='number'
         />
-        <input type='date' />
+        <input
+          type='date'
+          value={date}
+          onChange={(e) => {
+            setDate(e.target.value);
+            console.log(e.target.value);
+          }}
+        />
         <input type='submit' value='Add Stock' onClick={submitForm} />
         {warning && <p>{warning}</p>}
       </form>

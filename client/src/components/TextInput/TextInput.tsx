@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-// import '../styles/TextInput.scss';
+import './TextInput.scss';
 interface Props {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   value: string;

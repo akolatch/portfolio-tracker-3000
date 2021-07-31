@@ -1,0 +1,29 @@
+@import '../../styles/colors.scss';
+
+.text-input {
+  margin: 1em;
+  input {
+    border: 2px solid $gray-10;
+    border-bottom: 2px solid $gray-50;
+    background-color: $gray-10;
+    padding: 0.75em 1.5em;
+    &::placeholder {
+      color: $gray-50;
+    }
+  }
+  label {
+    display: block;
+    font-size: 0.9em;
+    margin-bottom: 0.5em;
+    padding-left: 0.5em;
+  }
+  &-invalid {
+    @extend .text-input;
+    input {
+      border: 2px solid $alert-60;
+    }
+    label {
+      color: $alert-60;
+    }
+  }
+}

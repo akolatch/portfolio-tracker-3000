@@ -19,7 +19,9 @@ function App(): React.ReactElement {
         <Link to='/'>
           <h1>Portfolio Tracker 3000</h1>
         </Link>
-        <Link to='/portfolio/new'>Add Portfolio</Link>
+        <Link className='button' to='/portfolio/new'>
+          Add Portfolio
+        </Link>
         <PortfolioList
           portfolioList={portfolioList}
           setSelectedPortfolio={setSelectedPortfolio}
