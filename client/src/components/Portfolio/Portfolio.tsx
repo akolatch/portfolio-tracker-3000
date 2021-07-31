@@ -1,4 +1,5 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import { useFetchPortfolio } from '../../hooks/useFetchPortfolio';
 import { TickerList } from './TickerList';
 
@@ -8,6 +9,14 @@ interface Props {
 }
 export default function Portfolio({ name, id = 0 }: Props): React.ReactElement {
   const [portfolioData, sums, isLoading, error] = useFetchPortfolio(id);
+  const history = useHistory();
+  const deletePortfolio = async () => {
+    await fetch(`/portfolio/${id}`, {
+      method: 'DELETE',
+    });
+    history.push('/');
+  };
+
   return (
     <div>
       <h3>{name}</h3>
@@ -25,6 +34,7 @@ export default function Portfolio({ name, id = 0 }: Props): React.ReactElement {
           </div>
         </div>
       )}
+      <button onClick={deletePortfolio}>Delete</button>
     </div>
   );
 }
