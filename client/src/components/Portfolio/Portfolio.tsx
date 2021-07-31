@@ -9,14 +9,28 @@ interface Props {
   id?: number;
 }
 export default function Portfolio({ name, id = 0 }: Props): React.ReactElement {
-  const [portfolioData, sums, isLoading, error, inUpdate, setInUpdate] =
+  const [portfolioData, setPortfolioData, sums, isLoading, error] =
     useFetchPortfolio(id);
+  const [addStock, setAddStock] = useState(false);
   const history = useHistory();
+
+  const closeAddForm = () => {
+    setPortfolioData();
+    setAddStock(false);
+  };
+
   const deletePortfolio = async () => {
     await fetch(`/portfolio/${id}`, {
       method: 'DELETE',
     });
     history.push('/');
+  };
+
+  const deleteStock = async (tickerId: number) => {
+    await fetch(`/ticker/${tickerId}`, {
+      method: 'DELETE',
+    });
+    setPortfolioData();
   };
 
   return (
@@ -28,7 +42,7 @@ export default function Portfolio({ name, id = 0 }: Props): React.ReactElement {
         <div>{error}</div>
       ) : (
         <div>
-          <TickerList tickerList={portfolioData} />
+          <TickerList tickerList={portfolioData} deleteStock={deleteStock} />
           <div>
             <div>{`Total Paid: $${sums.paid}`}</div>
             <div>{`Current Value: $${sums.value}`}</div>
@@ -36,10 +50,10 @@ export default function Portfolio({ name, id = 0 }: Props): React.ReactElement {
           </div>
         </div>
       )}
-      {inUpdate ? (
-        <AddTicker portfolioId={id} setShowAddForm={setInUpdate} />
+      {addStock ? (
+        <AddTicker portfolioId={id} closeAddForm={closeAddForm} />
       ) : (
-        <button onClick={() => setInUpdate(true)}>Add Stock</button>
+        <button onClick={() => setAddStock(true)}>Add Stock</button>
       )}
       <button onClick={deletePortfolio}>Delete</button>
     </div>

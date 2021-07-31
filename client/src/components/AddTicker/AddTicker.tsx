@@ -4,12 +4,12 @@ import { TextInput } from '../TextInput/TextInput';
 
 interface Props {
   portfolioId: number;
-  setShowAddForm: React.Dispatch<React.SetStateAction<boolean>>;
+  closeAddForm: () => void;
 }
 
 export function AddTicker({
   portfolioId,
-  setShowAddForm,
+  closeAddForm,
 }: Props): React.ReactElement {
   const [formValue, setFormValue, invalidForm] = useFormInputs({
     ticker: '',
@@ -34,7 +34,7 @@ export function AddTicker({
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(formValue),
+      body: JSON.stringify(newStock),
     });
     if (result.status === 404) {
       setWarning('Stock Symbol not Found');
@@ -46,7 +46,7 @@ export function AddTicker({
       setWarning('Stock Symbol already exists');
       return;
     }
-    setShowAddForm(false);
+    closeAddForm();
   };
 
   return (
@@ -76,6 +76,7 @@ export function AddTicker({
           value={formValue.shares}
           type='number'
         />
+        <input type='date' />
         <input type='submit' value='Add Stock' onClick={submitForm} />
         {warning && <p>{warning}</p>}
       </form>

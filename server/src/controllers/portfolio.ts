@@ -47,10 +47,11 @@ export const portfolio = {
         return;
       }
       // check if ticker is valid
+      console.log(req.body);
       const { ticker } = req.body;
       const updates = {
-        shares: parseInt(req.body.shares, 10),
-        price: parseFloat(req.body.price),
+        shares: req.body.shares,
+        price: req.body.price,
       };
       if (await tickerIsInvalid(res, { ticker, ...updates })) return;
 

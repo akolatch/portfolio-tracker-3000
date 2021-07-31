@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { PortfolioData } from '../types';
 
 interface PortfolioValues {
@@ -9,53 +9,44 @@ interface PortfolioValues {
 
 export function useFetchPortfolio(
   id: number
-): [
-  PortfolioData[],
-  PortfolioValues,
-  boolean,
-  string,
-  boolean,
-  React.Dispatch<React.SetStateAction<boolean>>
-] {
+): [PortfolioData[], () => Promise<void>, PortfolioValues, boolean, string] {
   const [portfolioData, setPortfolioData] = useState<PortfolioData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
-  const [inUpdate, setInUpdate] = useState(false);
   const [sums, setSums] = useState<PortfolioValues>({
     paid: 0,
     value: 0,
     profit: 0,
   });
 
-  useEffect(() => {
-    const fetchPortfolio = async () => {
-      const response = await fetch(`/portfolio/${id}`);
-      if (response.status === 200) {
-        const portfolio = await response.json();
-        const [paid, value] = portfolio.reduce(
-          (acc: [number, number], { price, currentPrice }: PortfolioData) => {
-            return [
-              acc[0] + parseFloat(price),
-              acc[1] + parseFloat(currentPrice),
-            ];
-          },
-          [0, 0]
-        );
-        setSums({ paid, value, profit: value - paid });
-        setPortfolioData(portfolio);
-        setError('');
-      } else if (response.status === 404) {
-        setError('Start Adding Stocks');
-      } else {
-        setError('Slow Down');
-      }
-      setIsLoading(false);
-    };
-    if (!inUpdate) {
-      fetchPortfolio();
+  const fetchPortfolio = useCallback(async () => {
+    const response = await fetch(`/portfolio/${id}`);
+    if (response.status === 200) {
+      const portfolio = await response.json();
+      const [paid, value] = portfolio.reduce(
+        (acc: [number, number], { price, currentPrice }: PortfolioData) => {
+          return [
+            acc[0] + parseFloat(price),
+            acc[1] + parseFloat(currentPrice),
+          ];
+        },
+        [0, 0]
+      );
+      setSums({ paid, value, profit: value - paid });
+      setPortfolioData(portfolio);
+      setError('');
+    } else if (response.status === 404) {
+      setError('Start Adding Stocks');
+    } else {
+      setError('Slow Down');
     }
-    return () => {};
-  }, [inUpdate, id]);
+    setIsLoading(false);
+  }, [id]);
 
-  return [portfolioData, sums, isLoading, error, inUpdate, setInUpdate];
+  useEffect(() => {
+    fetchPortfolio();
+    return () => {};
+  }, [id, fetchPortfolio]);
+
+  return [portfolioData, fetchPortfolio, sums, isLoading, error];
 }
