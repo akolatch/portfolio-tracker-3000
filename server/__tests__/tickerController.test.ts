@@ -2,23 +2,28 @@ import { app } from '../src/server/app';
 import supertest from 'supertest';
 import { Status } from '../src/constants';
 import { Portfolios, Tickers } from '../src/models';
+import { where } from 'sequelize/types';
 const request = supertest(app);
 
 describe('TickerController', () => {
-  it('should return reject invalid updates', async () => {
-    const portfolio = await Portfolios.create({ name: 'test' });
-    const portfolioId = portfolio?.getDataValue('id');
+  it('should reject invalid updates', async () => {
+    const portfolio = await Portfolios.findOrCreate({
+      where: { name: 'test' },
+    });
+    const portfolioId = portfolio[0].getDataValue('id');
+    await Tickers.destroy({ where: { portfolioId } });
     const ticker = await Tickers.create({
-      ticker: 'IBM',
-      price: 1,
-      shares: 1,
+      symbol: 'IBM',
+      pricePaid: 1,
+      numShares: 1,
+      purchaseDate: '2021-01-01',
       portfolioId,
     });
     const tickerId = ticker?.getDataValue('id');
     const invalidUpdates = [
       {},
-      { price: 0, shares: 0 },
-      { price: '', shares: '' },
+      { pricePaid: 0, numShares: 0, purchaseDate: '01-01' },
+      { pricePaid: '', numShares: '', purchaseDate: '2021-51-01' },
     ];
     for (const update of invalidUpdates) {
       const res = await request.put(`/ticker/${tickerId}`).send(update);
@@ -29,21 +34,24 @@ describe('TickerController', () => {
     const portfolio = await Portfolios.findOne({ where: { name: 'test' } });
     const portfolioId = portfolio?.getDataValue('id');
     const ticker = await Tickers.create({
-      ticker: 'IBM',
-      price: 1,
-      shares: 1,
+      symbol: 'IBM',
+      pricePaid: 1,
+      numShares: 1,
+      purchaseDate: '2021-01-01',
       portfolioId,
     });
     const tickerId = ticker?.getDataValue('id');
 
     const res = await await request
       .put(`/ticker/${tickerId}`)
-      .send({ price: 2, shares: 2 });
+      .send({ pricePaid: 2, numShares: 2, purchaseDate: '2019-01-01' });
     const tickerAfter = await Tickers.findByPk(tickerId);
-    const newPrice = tickerAfter?.getDataValue('price');
-    const newShares = tickerAfter?.getDataValue('shares');
+    const newPrice = tickerAfter?.getDataValue('pricePaid');
+    const newShares = tickerAfter?.getDataValue('numShares');
+    const newPurchaseDate = tickerAfter?.getDataValue('purchaseDate');
     expect(newShares).toBe(2);
     expect(newPrice).toBe('2.00');
+    expect(newPurchaseDate).toBe('2019-01-01');
     expect(res.status).toBe(Status.NoContent);
   });
 
@@ -51,19 +59,20 @@ describe('TickerController', () => {
     const portfolio = await Portfolios.findOne({ where: { name: 'test' } });
     const portfolioId = portfolio?.getDataValue('id');
     const ticker = await Tickers.create({
-      ticker: 'IBM',
-      price: 1,
-      shares: 1,
+      symbol: 'IBM',
+      pricePaid: 1,
+      numShares: 1,
+      purchaseDate: '2021-01-01',
       portfolioId,
     });
     const tickerId = ticker?.getDataValue('id');
 
     const res = await await request
       .put(`/ticker/${tickerId}`)
-      .send({ price: 2 });
+      .send({ pricePaid: 2 });
     const tickerAfter = await Tickers.findByPk(tickerId);
-    const newPrice = tickerAfter?.getDataValue('price');
-    const newShares = tickerAfter?.getDataValue('shares');
+    const newPrice = tickerAfter?.getDataValue('pricePaid');
+    const newShares = tickerAfter?.getDataValue('numShares');
     expect(newShares).toBe(1);
     expect(newPrice).toBe('2.00');
     expect(res.status).toBe(Status.NoContent);
@@ -74,9 +83,10 @@ describe('TickerController', () => {
     const portfolio = await Portfolios.findAll({ where: { name: 'test' } });
     const portfolioId = portfolio[0]?.getDataValue('id');
     const ticker = await Tickers.create({
-      ticker: 'IBM',
-      price: 1,
-      shares: 1,
+      symbol: 'IBM',
+      pricePaid: 1,
+      numShares: 1,
+      purchaseDate: '2021-01-01',
       portfolioId,
     });
     const tickerId = ticker?.getDataValue('id');

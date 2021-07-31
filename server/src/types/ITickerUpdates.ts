@@ -1,5 +1,5 @@
 export interface ITickerUpdates {
-  shares?: number;
-  price?: number;
-  purchaseDate?: number;
+  numShares?: number;
+  pricePaid?: number;
+  purchaseDate?: string;
 }

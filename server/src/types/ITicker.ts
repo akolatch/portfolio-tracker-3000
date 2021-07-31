@@ -1,5 +1,6 @@
 export interface ITicker {
-  ticker: string;
-  shares: number;
-  price: number;
+  symbol: string;
+  numShares: number;
+  pricePaid: number;
+  purchaseDate: string;
 }

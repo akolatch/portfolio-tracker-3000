@@ -1,18 +1,23 @@
 import { ITickerUpdates } from '../../types';
+import { invalidDate } from './invalidDate';
 import { invalidNumber } from './invalidNumber';
 
 export function invalidUpdate(
-  { shares, price }: ITickerUpdates,
+  { numShares, pricePaid, purchaseDate }: ITickerUpdates,
   updates: ITickerUpdates
 ): boolean {
   let invalid = true;
-  if (!invalidNumber(shares)) {
+  if (!invalidNumber(numShares)) {
     invalid = false;
-    updates.shares = shares;
+    updates.numShares = numShares;
   }
-  if (!invalidNumber(price)) {
+  if (!invalidNumber(pricePaid)) {
     invalid = false;
-    updates.price = price;
+    updates.pricePaid = pricePaid;
+  }
+  if (!invalidDate(purchaseDate)) {
+    invalid = false;
+    updates.purchaseDate = purchaseDate;
   }
   return invalid;
 }
