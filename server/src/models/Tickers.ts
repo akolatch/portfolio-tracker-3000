@@ -1,4 +1,4 @@
-import sequelize from 'sequelize';
+import sequelize, { ModelDefined } from 'sequelize';
 import { ORM } from './ORM';
 
 export const Tickers = ORM.define('tickers', {

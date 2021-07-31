@@ -40,17 +40,17 @@ export const portfolio = {
   // POST /portfolios/:id add a ticker to a portfolio
   addTicker: async (req: Request, res: Response) => {
     const portfolioId = req.params.id;
-    const exists = await Portfolios.findByPk(portfolioId);
-    if (exists === null) {
-      res.status(Status.NotFound).json({ message: 'Portfolio not found' });
-      return;
-    }
-    // check if ticker is valid
-    if (await tickerIsInvalid(res, req.body)) return;
-
-    const { ticker, shares, price } = req.body;
-
     try {
+      const exists = await Portfolios.findByPk(portfolioId);
+      if (exists === null) {
+        res.status(Status.NotFound).json({ message: 'Portfolio not found' });
+        return;
+      }
+      // check if ticker is valid
+      if (await tickerIsInvalid(res, req.body)) return;
+
+      const { ticker, shares, price } = req.body;
+
       const [, newTicker] = await Tickers.findOrCreate({
         where: { ticker, portfolioId },
         defaults: { shares, price },
@@ -107,12 +107,12 @@ export const portfolio = {
   // DELETE /portfolios/:id delete a portfolio
   delete: async (req: Request, res: Response) => {
     const portfolioId = req.params.id;
-    const exists = await Portfolios.findByPk(portfolioId);
-    if (exists === null) {
-      res.status(Status.NotFound).json({ message: 'Portfolio not found' });
-      return;
-    }
     try {
+      const exists = await Portfolios.findByPk(portfolioId);
+      if (exists === null) {
+        res.status(Status.NotFound).json({ message: 'Portfolio not found' });
+        return;
+      }
       await Portfolios.destroy({
         where: { id: portfolioId },
         cascade: true,
