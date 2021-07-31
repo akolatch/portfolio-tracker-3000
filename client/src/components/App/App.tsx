@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { Portfolio } from '../../types';
+import { TPortfolio } from '../../types';
 import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
 import './App.scss';
 import { AddPortfolio } from '../AddPortfolio/AddPortfolio';
 import { PortfolioList } from '../PorfolioList/PortfolioList';
+import Portfolio from '../Portfolio/Portfolio';
 
 function App(): React.ReactElement {
-  const [portfolioList, setPortfolioList] = useState<Portfolio[]>([]);
-  const [selectedPortfolio, setSelectedPortfolio] = useState<Portfolio | null>(
+  const [portfolioList, setPortfolioList] = useState<TPortfolio[]>([]);
+  const [selectedPortfolio, setSelectedPortfolio] = useState<TPortfolio | null>(
     null
   );
   useEffect(() => {
@@ -32,6 +33,12 @@ function App(): React.ReactElement {
           <Switch>
             <Route path='/portfolio/new' exact>
               <AddPortfolio />
+            </Route>
+            <Route path='/portfolio/:id' exact>
+              <Portfolio
+                name={selectedPortfolio?.name}
+                id={selectedPortfolio?.id}
+              />
             </Route>
           </Switch>
         </main>

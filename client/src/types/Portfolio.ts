@@ -1,4 +1,4 @@
-export type Portfolio = {
+export type TPortfolio = {
   id: number;
   name: string;
   createdAt: string;

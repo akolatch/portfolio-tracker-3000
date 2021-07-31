@@ -1,10 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Portfolio } from '../../types';
+import { TPortfolio } from '../../types';
 
 interface Props {
-  portfolio: Portfolio;
-  setSelectedPortfolio: React.Dispatch<React.SetStateAction<Portfolio | null>>;
+  portfolio: TPortfolio;
+  setSelectedPortfolio: React.Dispatch<React.SetStateAction<TPortfolio | null>>;
 }
 
 export function PortfolioListItem({
