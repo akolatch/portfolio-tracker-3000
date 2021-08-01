@@ -7,7 +7,6 @@ interface Props {
   label: string;
   edit: boolean;
   type?: string;
-  validateForm?: (value: string) => boolean;
 }
 export default function TickerInput({
   onChange,
@@ -16,7 +15,7 @@ export default function TickerInput({
   label,
   edit = false,
   type = 'number',
-}: Props): React.ReactElement<any> {
+}: Props): React.ReactElement {
   return (
     <input
       className={edit ? `ticker-${type}-input-edit` : `ticker-${type}-input`}

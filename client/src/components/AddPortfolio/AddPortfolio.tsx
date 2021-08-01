@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useFormInputs } from '../../hooks/useFormInputs';
-import { TextInput } from '../TextInput/TextInput';
+import { FormInput } from '../FormInput/FormInput';
 
 export function AddPortfolio() {
   const [formValue, setFormValue, invalidForm] = useFormInputs({ name: '' });
@@ -25,8 +25,8 @@ export function AddPortfolio() {
 
   return (
     <form action='submit'>
-      <h3>New Portfolio</h3>
-      <TextInput
+      <h2>New Portfolio</h2>
+      <FormInput
         onChange={setFormValue}
         label='Name'
         name='name'

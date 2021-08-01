@@ -15,11 +15,6 @@ export default function Portfolio({ name, id = 0 }: Props): React.ReactElement {
   const [addStock, setAddStock] = useState(false);
   const history = useHistory();
 
-  // const closeAddForm = () => {
-  //   setPortfolioData();
-  //   setAddStock(false);
-  // };
-
   const deletePortfolio = async () => {
     await fetch(`/portfolio/${id}`, {
       method: 'DELETE',

@@ -12,19 +12,21 @@ export function TickerList({
   tickerList,
   deleteStock,
   setPortfolioData,
-}: Props) {
+}: Props): React.ReactElement {
   return (
     <div>
       <table>
-        <TickerListHeader />
-        {tickerList.map((ticker) => (
-          <TickerListItem
-            key={ticker.id}
-            ticker={ticker}
-            deleteStock={deleteStock}
-            setPortfolioData={setPortfolioData}
-          />
-        ))}
+        <tbody>
+          <TickerListHeader />
+          {tickerList.map((ticker) => (
+            <TickerListItem
+              key={ticker.id}
+              ticker={ticker}
+              deleteStock={deleteStock}
+              setPortfolioData={setPortfolioData}
+            />
+          ))}
+        </tbody>
       </table>
     </div>
   );

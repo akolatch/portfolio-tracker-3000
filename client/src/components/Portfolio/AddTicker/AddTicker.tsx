@@ -2,7 +2,7 @@ import React from 'react';
 import { useFormInputs } from '../../../hooks/useFormInputs';
 import { useCreateNewTicker } from '../../../hooks/useCreateNewTicker';
 import { NewTicker } from '../../../types';
-import { TextInput } from '../../TextInput/TextInput';
+import { FormInput } from '../../FormInput/FormInput';
 import './AddTicker.scss';
 interface Props {
   portfolioId: number;
@@ -53,15 +53,15 @@ export function AddTicker({
   return (
     <div className='add-ticker-container' onClick={closeModel}>
       <form action='submit'>
-        <h1>Add Ticker</h1>
-        <TextInput
+        <h3>Add Ticker</h3>
+        <FormInput
           onChange={setFormValue}
           label='Stock Symbol'
           placeholder='IBM'
           name='symbol'
           value={formValue.symbol}
         />
-        <TextInput
+        <FormInput
           onChange={setFormValue}
           label='Price Paid'
           placeholder='100.00'
@@ -69,7 +69,7 @@ export function AddTicker({
           value={formValue.pricePaid}
           type='number'
         />
-        <TextInput
+        <FormInput
           onChange={setFormValue}
           label='Number of Shares'
           placeholder='20'
@@ -77,7 +77,7 @@ export function AddTicker({
           value={formValue.numShares}
           type='number'
         />
-        <TextInput
+        <FormInput
           onChange={setFormValue}
           label='Purchase Date'
           placeholder=''
