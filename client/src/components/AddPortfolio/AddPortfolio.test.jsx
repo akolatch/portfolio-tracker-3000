@@ -3,7 +3,6 @@ import {
   render,
   fireEvent,
   cleanup,
-  findAllByTestId,
   screen,
   waitFor,
 } from '@testing-library/react';

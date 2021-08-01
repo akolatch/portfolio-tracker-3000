@@ -15,7 +15,11 @@ export function Sidebar({
 }: Props): React.ReactElement {
   return (
     <section className='sidebar'>
-      <Link className='button-main' to='/portfolio/new'>
+      <Link
+        data-testid='open-add-form'
+        className='button-main'
+        to='/portfolio/new'
+      >
         Add Portfolio
       </Link>
       <PortfolioList
