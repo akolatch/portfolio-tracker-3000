@@ -1,37 +1,30 @@
 @import './colors.scss';
 @import './mixins.scss';
 
+$font-main: 'Roboto', sans-serif;
+
 body {
   margin: 0;
   color: $gray-90;
-  font-family: 'Roboto', sans-serif;
+  font-family: $font-main;
 }
 
 .button-main,
-button,
 input[type='submit'] {
-  border: none;
-  margin: 1em;
-  color: $white;
-  padding: 0.75em 1.5em;
-  background-color: $blue-60;
-  &:hover {
-    background-color: $blue-70;
-  }
+  @include button($blue-60, $blue-70);
+  // border: none;
+  // margin: 1em;
+  // color: $white;
+  // padding: 0.75em 1.5em;
+  // background-color: $blue-60;
+  // &:hover {
+  //   background-color: $blue-70;
+  // }
 }
 
-// input[type='text'],
-// // input[type='date'],
-// textarea,
-// select {
-//   border: none;
-//   border-bottom: 2px solid $gray-50;
-//   background-color: $gray-10;
-//   padding: 0.75em 1.5em;
-//   &::placeholder {
-//     color: $gray-50;
-//   }
-// }
+.button-secondary {
+  @include button($gray-70, $gray-90);
+}
 
 a {
   color: black;

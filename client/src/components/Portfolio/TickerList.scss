@@ -1,14 +1,34 @@
 @import '../../styles/mixins.scss';
 @import '../../styles/colors.scss';
-
+@import '../../styles/styles.scss';
+.stock-ticker {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: auto;
+  justify-content: space-between;
+  td {
+    padding: 0 0.75em;
+  }
+}
+.back-spacer {
+  margin-right: 15em;
+}
+.front-spacer {
+  margin-right: 3em;
+}
 @mixin tickerInput {
   &:disabled {
+    font-size: 1rem;
+    font: $font-main;
     background-color: $white;
+    color: $gray-90;
     border: none;
   }
 }
 .ticker-number-input {
   @include tickerInput();
+  width: 12ch;
   &-edit {
     @extend .ticker-number-input;
     @include formInput(0.94em);

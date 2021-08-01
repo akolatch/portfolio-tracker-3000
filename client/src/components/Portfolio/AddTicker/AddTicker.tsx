@@ -35,28 +35,10 @@ export function AddTicker({
       purchaseDate: formValue.purchaseDate,
     };
     await postNewTicker(portfolioId, newStock, closeAddForm);
-    // const result = await fetch(`/portfolio/${portfolioId}`, {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify(newStock),
-    // });
-    // if (result.status === 404) {
-    //   setWarning('Stock Symbol not Found');
-    //   return;
-    // }
-    // if (result.status === 400) {
-    //   const data = await result.json();
-    //   console.log(data);
-    //   setWarning('Stock Symbol already exists');
-    //   return;
-    // }
-    // closeAddForm();
   };
 
   return (
-    <div>
+    <div className='add-ticker-form'>
       <h1>Add Ticker</h1>
       <form action='submit'>
         <TextInput
@@ -90,16 +72,8 @@ export function AddTicker({
           value={formValue.purchaseDate}
           type='date'
         />
-        {/* <input
-          type='date'
-          value={date}
-          onChange={(e) => {
-            setDate(e.target.value);
-            console.log(e.target.value);
-          }}
-        /> */}
+        {warning && <p className='warning'>{warning}</p>}
         <input type='submit' value='Add Stock' onClick={submitForm} />
-        {warning && <p>{warning}</p>}
       </form>
     </div>
   );

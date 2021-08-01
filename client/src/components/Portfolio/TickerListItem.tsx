@@ -3,7 +3,7 @@ import { useFormInputs } from '../../hooks/useFormInputs';
 import { useUpdateTicker } from '../../hooks/useUpdateTicker';
 import { TickerData, TickerUpdates } from '../../types';
 import TickerInput from './TickerInput';
-import './TickerInput.scss';
+
 interface Props {
   ticker: TickerData;
   deleteStock: (tickerId: number) => Promise<void>;
@@ -34,36 +34,55 @@ export function TickerListItem({
     };
     await updateTicker(ticker.id, updates, setEdit);
   };
+
   return (
-    <li className='stock-ticker'>
-      <span>{ticker.symbol}</span>
-      <span>{ticker.purchaseDate}</span>
-      <TickerInput
-        onChange={setFormValue}
-        value={formValue.purchaseDate}
-        name='purchaseDate'
-        label='Purchase Date'
-        type='date'
-        edit={edit}
-      />
-      <TickerInput
-        onChange={setFormValue}
-        value={formValue.numShares}
-        name='numShares'
-        label='Number of Shares'
-        edit={edit}
-      />
-      <TickerInput
-        onChange={setFormValue}
-        value={formValue.pricePaid}
-        name='pricePaid'
-        label='Price Paid'
-        edit={edit}
-      />
-      <span>{`$${ticker.currentPrice}`}</span>
-      <span>{`$${parseFloat(ticker.currentPrice) * ticker.numShares}`}</span>
-      <button onClick={handleEdit}>{edit ? 'Done ' : 'Edit'}</button>
-      <button onClick={() => deleteStock(ticker.id)}>Delete</button>
-    </li>
+    <tr className='stock-ticker'>
+      <td className='front-spacer'>{ticker.symbol}</td>
+      <td>
+        <TickerInput
+          onChange={setFormValue}
+          value={formValue.purchaseDate}
+          name='purchaseDate'
+          label='Purchase Date'
+          type='date'
+          edit={edit}
+        />
+      </td>
+      <td>
+        <TickerInput
+          onChange={setFormValue}
+          value={formValue.numShares}
+          name='numShares'
+          label='Number of Shares'
+          edit={edit}
+        />
+      </td>
+      <td>
+        $
+        <TickerInput
+          onChange={setFormValue}
+          value={formValue.pricePaid}
+          name='pricePaid'
+          label='Price Paid'
+          edit={edit}
+        />
+      </td>
+      <td>{`$${ticker.currentPrice}`}</td>
+      <td>{`$${(parseFloat(ticker.currentPrice) * ticker.numShares).toFixed(
+        2
+      )}`}</td>
+      <td className='list-button'>
+        <button className='button-main' onClick={handleEdit}>
+          {edit ? 'Done ' : 'Edit'}
+        </button>
+
+        <button
+          className='button-secondary'
+          onClick={() => deleteStock(ticker.id)}
+        >
+          Delete
+        </button>
+      </td>
+    </tr>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useFetchPortfolio } from '../../hooks/useFetchPortfolio';
 import { AddTicker } from './AddTicker/AddTicker';
@@ -33,6 +33,14 @@ export default function Portfolio({ name, id = 0 }: Props): React.ReactElement {
     setPortfolioData();
   };
 
+  // close add stock when switching between portfolios
+  useEffect(() => {
+    setAddStock(false);
+    return () => {
+      setAddStock(false);
+    };
+  }, [id]);
+
   return (
     <div>
       <h3>{name}</h3>
@@ -53,9 +61,13 @@ export default function Portfolio({ name, id = 0 }: Props): React.ReactElement {
       {addStock ? (
         <AddTicker portfolioId={id} closeAddForm={closeAddForm} />
       ) : (
-        <button onClick={() => setAddStock(true)}>Add Stock</button>
+        <button className='button-main' onClick={() => setAddStock(true)}>
+          Add Stock
+        </button>
       )}
-      <button onClick={deletePortfolio}>Delete</button>
+      <button className='button-secondary' onClick={deletePortfolio}>
+        Delete
+      </button>
     </div>
   );
 }

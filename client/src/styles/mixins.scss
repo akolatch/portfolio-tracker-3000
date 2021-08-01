@@ -12,3 +12,14 @@
     color: $gray-50;
   }
 }
+
+@mixin button($color, $hoverColor) {
+  border: none;
+  margin: 1em;
+  color: $white;
+  padding: 0.75em 1.5em;
+  background-color: $color;
+  &:hover {
+    background-color: $hoverColor;
+  }
+}

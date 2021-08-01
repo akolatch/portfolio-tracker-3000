@@ -1,16 +1,17 @@
 import React from 'react';
 import { PortfolioData } from '../../types';
 import { TickerListItem } from './TickerListItem';
-
+import './TickerList.scss';
+import { TickerListHeader } from './TickerListHeader';
 interface Props {
   tickerList: PortfolioData;
   deleteStock: (tickerId: number) => Promise<void>;
 }
 export function TickerList({ tickerList, deleteStock }: Props) {
-  console.log(tickerList);
   return (
     <div>
-      <ul>
+      <table>
+        <TickerListHeader />
         {tickerList.map((ticker) => (
           <TickerListItem
             key={ticker.id}
@@ -18,7 +19,7 @@ export function TickerList({ tickerList, deleteStock }: Props) {
             deleteStock={deleteStock}
           />
         ))}
-      </ul>
+      </table>
     </div>
   );
 }
