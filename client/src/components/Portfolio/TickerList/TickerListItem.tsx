@@ -7,11 +7,13 @@ import TickerInput from './TickerInput';
 interface Props {
   ticker: TickerData;
   deleteStock: (tickerId: number) => Promise<void>;
+  setPortfolioData: () => Promise<void>;
 }
 
 export function TickerListItem({
   ticker,
   deleteStock,
+  setPortfolioData,
 }: Props): React.ReactElement {
   const [formValue, setFormValue, invalidForm] = useFormInputs({
     pricePaid: ticker.pricePaid,
@@ -20,6 +22,11 @@ export function TickerListItem({
   });
   const [edit, setEdit] = useState(false);
   const { updateTicker } = useUpdateTicker();
+
+  const successfulUpdate = async () => {
+    await setPortfolioData();
+    setEdit(false);
+  };
 
   const handleEdit = async () => {
     if (!edit) {
@@ -32,7 +39,7 @@ export function TickerListItem({
       numShares: parseInt(formValue.numShares, 10),
       purchaseDate: formValue.purchaseDate,
     };
-    await updateTicker(ticker.id, updates, setEdit);
+    await updateTicker(ticker.id, updates, successfulUpdate);
   };
 
   return (

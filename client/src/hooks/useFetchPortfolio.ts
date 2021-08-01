@@ -18,10 +18,13 @@ export function useFetchPortfolio(
     if (response.status === 200) {
       const portfolio = await response.json();
       const [paid, value] = portfolio.reduce(
-        (acc: [number, number], { pricePaid, currentPrice }: TickerData) => {
+        (
+          acc: [number, number],
+          { pricePaid, currentPrice, numShares }: TickerData
+        ) => {
           return [
-            acc[0] + parseFloat(pricePaid),
-            acc[1] + parseFloat(currentPrice),
+            acc[0] + parseFloat(pricePaid) * numShares,
+            acc[1] + parseFloat(currentPrice) * numShares,
           ];
         },
         [0, 0]

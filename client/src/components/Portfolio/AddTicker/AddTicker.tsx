@@ -6,12 +6,14 @@ import { TextInput } from '../../TextInput/TextInput';
 import './AddTicker.scss';
 interface Props {
   portfolioId: number;
-  closeAddForm: () => void;
+  setPortfolioData: () => Promise<void>;
+  setAddStock: (value: React.SetStateAction<boolean>) => void;
 }
 
 export function AddTicker({
   portfolioId,
-  closeAddForm,
+  setAddStock,
+  setPortfolioData,
 }: Props): React.ReactElement {
   const [formValue, setFormValue, invalidForm] = useFormInputs({
     symbol: '',
@@ -19,8 +21,14 @@ export function AddTicker({
     numShares: '0',
     purchaseDate: '',
   });
+
   const { postNewTicker, warning, setWarning } = useCreateNewTicker();
 
+  const successfulSubmission = () => {
+    setPortfolioData();
+    setWarning('');
+    setAddStock(false);
+  };
   const submitForm = async (e: React.MouseEvent) => {
     e.preventDefault();
     if (invalidForm(formValue)) {
@@ -34,12 +42,12 @@ export function AddTicker({
       numShares: parseInt(formValue.numShares, 10),
       purchaseDate: formValue.purchaseDate,
     };
-    await postNewTicker(portfolioId, newStock, closeAddForm);
+    await postNewTicker(portfolioId, newStock, successfulSubmission);
   };
 
   const closeModel = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) {
-      closeAddForm();
+      setAddStock(false);
     }
   };
   return (
@@ -79,7 +87,7 @@ export function AddTicker({
         />
         {warning && <p className='warning'>{warning}</p>}
         <input type='submit' value='Add Stock' onClick={submitForm} />
-        <button className='button-secondary' onClick={closeAddForm}>
+        <button className='button-secondary' onClick={() => setAddStock(false)}>
           Cancel
         </button>
       </form>

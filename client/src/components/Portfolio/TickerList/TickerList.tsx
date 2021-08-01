@@ -6,8 +6,13 @@ import { TickerListHeader } from './TickerListHeader';
 interface Props {
   tickerList: PortfolioData;
   deleteStock: (tickerId: number) => Promise<void>;
+  setPortfolioData: () => Promise<void>;
 }
-export function TickerList({ tickerList, deleteStock }: Props) {
+export function TickerList({
+  tickerList,
+  deleteStock,
+  setPortfolioData,
+}: Props) {
   return (
     <div>
       <table>
@@ -17,6 +22,7 @@ export function TickerList({ tickerList, deleteStock }: Props) {
             key={ticker.id}
             ticker={ticker}
             deleteStock={deleteStock}
+            setPortfolioData={setPortfolioData}
           />
         ))}
       </table>

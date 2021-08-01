@@ -15,10 +15,10 @@ export default function Portfolio({ name, id = 0 }: Props): React.ReactElement {
   const [addStock, setAddStock] = useState(false);
   const history = useHistory();
 
-  const closeAddForm = () => {
-    setPortfolioData();
-    setAddStock(false);
-  };
+  // const closeAddForm = () => {
+  //   setPortfolioData();
+  //   setAddStock(false);
+  // };
 
   const deletePortfolio = async () => {
     await fetch(`/portfolio/${id}`, {
@@ -51,12 +51,20 @@ export default function Portfolio({ name, id = 0 }: Props): React.ReactElement {
         <div>{error}</div>
       ) : (
         <div>
-          <TickerList tickerList={portfolioData} deleteStock={deleteStock} />
+          <TickerList
+            tickerList={portfolioData}
+            deleteStock={deleteStock}
+            setPortfolioData={setPortfolioData}
+          />
           <Totals sums={sums} />
         </div>
       )}
       {addStock ? (
-        <AddTicker portfolioId={id} closeAddForm={closeAddForm} />
+        <AddTicker
+          portfolioId={id}
+          setAddStock={setAddStock}
+          setPortfolioData={setPortfolioData}
+        />
       ) : (
         <div>
           <button className='button-main' onClick={() => setAddStock(true)}>

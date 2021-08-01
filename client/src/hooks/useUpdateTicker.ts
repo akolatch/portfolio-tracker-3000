@@ -7,7 +7,7 @@ export function useUpdateTicker() {
   const updateTicker = async (
     id: number,
     updates: TickerUpdates,
-    cb: (param: boolean) => void
+    cb: () => void
   ) => {
     const result = await fetch(`/ticker/${id}`, {
       method: 'PUT',
@@ -26,7 +26,7 @@ export function useUpdateTicker() {
       return;
     }
     setWarning('');
-    cb(false);
+    cb();
   };
   return { updateTicker, warning, setWarning };
 }
