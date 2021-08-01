@@ -46,13 +46,18 @@ export function AddTicker({
   };
 
   const closeModel = (e: React.MouseEvent) => {
+    e.preventDefault();
     if (e.target === e.currentTarget) {
       setAddStock(false);
     }
   };
   return (
-    <div className='add-ticker-container' onClick={closeModel}>
-      <form action='submit'>
+    <div
+      data-testid='add-ticker-container'
+      className='add-ticker-container'
+      onClick={closeModel}
+    >
+      <form data-testid='form' action='submit'>
         <h3>Add Ticker</h3>
         <FormInput
           onChange={setFormValue}
@@ -87,7 +92,11 @@ export function AddTicker({
         />
         {warning && <p className='warning'>{warning}</p>}
         <input type='submit' value='Add Stock' onClick={submitForm} />
-        <button className='button-secondary' onClick={() => setAddStock(false)}>
+        <button
+          data-testid='close-button'
+          className='button-secondary'
+          onClick={closeModel}
+        >
           Cancel
         </button>
       </form>

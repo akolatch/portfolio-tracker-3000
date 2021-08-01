@@ -62,7 +62,11 @@ export function Portfolio({ name, id = 0 }: Props): React.ReactElement {
         />
       ) : (
         <div>
-          <button className='button-main' onClick={() => setAddStock(true)}>
+          <button
+            data-testid='open-add-stock-form'
+            className='button-main'
+            onClick={() => setAddStock(true)}
+          >
             Add Stock
           </button>
           <button className='button-secondary' onClick={deletePortfolio}>

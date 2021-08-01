@@ -17,6 +17,7 @@ export function useFetchPortfolio(
   const fetchPortfolio = useCallback(async () => {
     try {
       const response = await fetch(`/portfolio/${id}`);
+
       if (response.status === 200) {
         const portfolio = await response.json();
         const [paid, value] = portfolio.reduce(
@@ -40,7 +41,6 @@ export function useFetchPortfolio(
         setError('Slow Down');
       }
     } catch (e) {
-      console.log(e.message);
       setError('something went wrong');
     }
     setIsLoading(false);
