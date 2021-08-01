@@ -14,7 +14,7 @@ export function PortfolioListItem({
   setSelectedPortfolio,
 }: Props): React.ReactElement {
   return (
-    <li>
+    <li className='button-main'>
       <Link
         to={`/portfolio/${portfolio.id}`}
         onClick={() => setSelectedPortfolio(portfolio)}

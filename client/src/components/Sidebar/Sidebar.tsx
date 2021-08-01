@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { PortfolioDetails } from '../../types';
 import { PortfolioList } from './PortfolioList/PortfolioList';
-
+import './Sidebar.scss';
 interface Props {
   portfolioList: PortfolioDetails[];
   setSelectedPortfolio: React.Dispatch<

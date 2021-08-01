@@ -13,6 +13,7 @@ export function useFetchPortfolio(
     profit: 0,
   });
 
+  // memoize the fetch function so that it can be passed to useEffect and as part of the results will be re evaluated when ID changes
   const fetchPortfolio = useCallback(async () => {
     const response = await fetch(`/portfolio/${id}`);
     if (response.status === 200) {
@@ -40,10 +41,11 @@ export function useFetchPortfolio(
     setIsLoading(false);
   }, [id]);
 
+  // fires fetchPortfolio on mount
   useEffect(() => {
     fetchPortfolio();
     return () => {};
-  }, [id, fetchPortfolio]);
+  }, [fetchPortfolio]);
 
   return [portfolioData, fetchPortfolio, sums, isLoading, error];
 }
