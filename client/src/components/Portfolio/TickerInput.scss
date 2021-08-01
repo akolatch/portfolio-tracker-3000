@@ -1,6 +1,13 @@
+@import '../../styles/mixins.scss';
+@import '../../styles/colors.scss';
 .ticker-input {
-  border: none;
+  background-color: none;
+  &:disabled {
+    background-color: white;
+    border: none;
+  }
   &-edit {
-    border: 2px solid black;
+    @extend .ticker-input;
+    @include formInput;
   }
 }

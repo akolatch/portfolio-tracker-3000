@@ -26,11 +26,12 @@ export const ticker = {
 
       // if the ticker doesn't exist, return a 404
       if (exists === null) {
-        res.status(Status.NotFound).json({ message: 'Portfolio not found' });
+        res.status(Status.NotFound).json({ message: 'Ticker not found' });
         return;
       }
 
       // update the ticker
+      console.log(updates);
       await Tickers.update(updates, { where: { id } });
       res.sendStatus(Status.NoContent);
     } catch (err) {

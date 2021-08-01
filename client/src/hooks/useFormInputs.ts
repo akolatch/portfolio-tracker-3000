@@ -12,6 +12,7 @@ export function useFormInputs(
   const [inputFields, setInputFields] = useState<InputFields>(initialState);
 
   const onchange = (event: ChangeEvent<HTMLInputElement>) => {
+    console.log(inputFields);
     setInputFields((prevState) => ({
       ...prevState,
       [event.target.name]: event.target.value,
