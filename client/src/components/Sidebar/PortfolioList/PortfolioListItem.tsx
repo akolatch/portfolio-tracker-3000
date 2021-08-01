@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { PortfolioDetails } from '../../types';
+import { PortfolioDetails } from '../../../types';
 
 interface Props {
   portfolio: PortfolioDetails;

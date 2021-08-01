@@ -1,5 +1,5 @@
 import React from 'react';
-import { PortfolioDetails } from '../../types';
+import { PortfolioDetails } from '../../../types';
 import { PortfolioListItem } from './PortfolioListItem';
 
 interface Props {

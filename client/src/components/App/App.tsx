@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { PortfolioDetails } from '../../types';
 import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
-import './App.scss';
 import { AddPortfolio } from '../AddPortfolio/AddPortfolio';
-import { PortfolioList } from '../PortfolioList/PortfolioList';
 import Portfolio from '../Portfolio/Portfolio';
 import { Loading } from './Loading';
+import { Sidebar } from '../Sidebar/Sidebar';
+import './App.scss';
 
 function App(): React.ReactElement {
   const [portfolioList, setPortfolioList] = useState<PortfolioDetails[]>([]);
@@ -20,15 +20,10 @@ function App(): React.ReactElement {
             <h1>Portfolio Tracker 3000</h1>
           </Link>
         </header>
-        <section className='sidebar'>
-          <Link className='button-main' to='/portfolio/new'>
-            Add Portfolio
-          </Link>
-          <PortfolioList
-            portfolioList={portfolioList}
-            setSelectedPortfolio={setSelectedPortfolio}
-          />
-        </section>
+        <Sidebar
+          portfolioList={portfolioList}
+          setSelectedPortfolio={setSelectedPortfolio}
+        />
         <main className='main-view'>
           <Switch>
             <Route path='/' exact>
