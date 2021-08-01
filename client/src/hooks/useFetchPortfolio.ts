@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { PortfolioData } from '../types';
+import { PortfolioData, TickerData } from '../types';
 
 interface PortfolioValues {
   paid: number;
@@ -9,8 +9,8 @@ interface PortfolioValues {
 
 export function useFetchPortfolio(
   id: number
-): [PortfolioData[], () => Promise<void>, PortfolioValues, boolean, string] {
-  const [portfolioData, setPortfolioData] = useState<PortfolioData[]>([]);
+): [PortfolioData, () => Promise<void>, PortfolioValues, boolean, string] {
+  const [portfolioData, setPortfolioData] = useState<PortfolioData>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
   const [sums, setSums] = useState<PortfolioValues>({
@@ -24,9 +24,9 @@ export function useFetchPortfolio(
     if (response.status === 200) {
       const portfolio = await response.json();
       const [paid, value] = portfolio.reduce(
-        (acc: [number, number], { price, currentPrice }: PortfolioData) => {
+        (acc: [number, number], { pricePaid, currentPrice }: TickerData) => {
           return [
-            acc[0] + parseFloat(price),
+            acc[0] + parseFloat(pricePaid),
             acc[1] + parseFloat(currentPrice),
           ];
         },

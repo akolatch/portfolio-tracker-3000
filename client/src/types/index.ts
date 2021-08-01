@@ -1,2 +1,2 @@
-export type { TPortfolio } from './Portfolio';
-export type { PortfolioData } from './PortfolioData';
+export type { PortfolioDetails } from './Portfolio';
+export type { PortfolioData, TickerData, NewTicker } from './PortfolioData';

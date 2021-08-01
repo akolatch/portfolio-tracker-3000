@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useFormInputs } from '../../../hooks/useFormInputs';
+import { useCreateNewTicker } from '../../../hooks/useCreateNewTicker';
+import { NewTicker } from '../../../types';
 import { TextInput } from '../../TextInput/TextInput';
 
 interface Props {
@@ -12,41 +14,45 @@ export function AddTicker({
   closeAddForm,
 }: Props): React.ReactElement {
   const [formValue, setFormValue, invalidForm] = useFormInputs({
-    ticker: '',
-    price: '0',
-    shares: '0',
+    symbol: '',
+    pricePaid: '0',
+    numShares: '0',
+    purchaseDate: '',
   });
-  const [warning, setWarning] = useState('');
-  const [date, setDate] = useState('2021-07-22');
+  const { postNewTicker, warning, setWarning } = useCreateNewTicker();
+
   const submitForm = async (e: React.MouseEvent) => {
     e.preventDefault();
     if (invalidForm(formValue)) {
       setWarning('Please fill out all fields');
       return;
     }
-    const newStock = {
-      ticker: formValue.ticker,
-      price: parseFloat(formValue.price),
-      shares: parseInt(formValue.shares, 10),
+
+    const newStock: NewTicker = {
+      symbol: formValue.symbol,
+      pricePaid: parseFloat(formValue.pricePaid),
+      numShares: parseInt(formValue.numShares, 10),
+      purchaseDate: formValue.purchaseDate,
     };
-    const result = await fetch(`/portfolio/${portfolioId}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(newStock),
-    });
-    if (result.status === 404) {
-      setWarning('Stock Symbol not Found');
-      return;
-    }
-    if (result.status === 400) {
-      const data = await result.json();
-      console.log(data);
-      setWarning('Stock Symbol already exists');
-      return;
-    }
-    closeAddForm();
+    await postNewTicker(portfolioId, newStock, closeAddForm);
+    // const result = await fetch(`/portfolio/${portfolioId}`, {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify(newStock),
+    // });
+    // if (result.status === 404) {
+    //   setWarning('Stock Symbol not Found');
+    //   return;
+    // }
+    // if (result.status === 400) {
+    //   const data = await result.json();
+    //   console.log(data);
+    //   setWarning('Stock Symbol already exists');
+    //   return;
+    // }
+    // closeAddForm();
   };
 
   return (
@@ -57,33 +63,41 @@ export function AddTicker({
           onChange={setFormValue}
           label='Stock Symbol'
           placeholder='IBM'
-          name='ticker'
-          value={formValue.ticker}
+          name='symbol'
+          value={formValue.symbol}
         />
         <TextInput
           onChange={setFormValue}
           label='Price Paid'
           placeholder='100.00'
-          name='price'
-          value={formValue.price}
+          name='pricePaid'
+          value={formValue.pricePaid}
           type='number'
         />
         <TextInput
           onChange={setFormValue}
           label='Number of Shares'
           placeholder='20'
-          name='shares'
-          value={formValue.shares}
+          name='numShares'
+          value={formValue.numShares}
           type='number'
         />
-        <input
+        <TextInput
+          onChange={setFormValue}
+          label='Purchase Date'
+          placeholder=''
+          name='purchaseDate'
+          value={formValue.purchaseDate}
+          type='date'
+        />
+        {/* <input
           type='date'
           value={date}
           onChange={(e) => {
             setDate(e.target.value);
             console.log(e.target.value);
           }}
-        />
+        /> */}
         <input type='submit' value='Add Stock' onClick={submitForm} />
         {warning && <p>{warning}</p>}
       </form>

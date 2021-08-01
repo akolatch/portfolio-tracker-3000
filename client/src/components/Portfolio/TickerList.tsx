@@ -3,7 +3,7 @@ import { PortfolioData } from '../../types';
 import { TickerListItem } from './TickerListItem';
 
 interface Props {
-  tickerList: PortfolioData[];
+  tickerList: PortfolioData;
   deleteStock: (tickerId: number) => Promise<void>;
 }
 export function TickerList({ tickerList, deleteStock }: Props) {

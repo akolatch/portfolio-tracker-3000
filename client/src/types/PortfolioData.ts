@@ -1,8 +1,25 @@
-export type PortfolioData = {
+interface Ticker {
+  symbol: string;
+  numShares: number;
+  purchaseDate: string;
+}
+
+export interface NewTicker extends Ticker {
+  pricePaid: number;
+}
+
+// export type TickerData = {
+//   id: number;
+//   symbol: string;
+//   currentPrice: string;
+//   numShares: number;
+//   pricePaid: string;
+//   purchaseDate: string;
+// };
+export interface TickerData extends Ticker {
   id: number;
-  ticker: string;
+  pricePaid: string;
   currentPrice: string;
-  shares: number;
-  price: string;
-  createdAt: string;
-};
+}
+
+export type PortfolioData = TickerData[];

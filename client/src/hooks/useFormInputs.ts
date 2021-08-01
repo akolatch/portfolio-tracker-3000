@@ -20,7 +20,10 @@ export function useFormInputs(
 
   const invalidForm = (inputFields: InputFields): boolean => {
     for (const key in inputFields) {
-      if (inputFields[key] === '' || inputFields[key] === '0') return true;
+      if (inputFields[key] === '' || inputFields[key] === '0') {
+        console.log(key);
+        return true;
+      }
     }
     return false;
   };

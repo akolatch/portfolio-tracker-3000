@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { TPortfolio } from '../../types';
+import { PortfolioDetails } from '../../types';
 
 interface Props {
-  setPortfolioList: React.Dispatch<React.SetStateAction<TPortfolio[]>>;
+  setPortfolioList: React.Dispatch<React.SetStateAction<PortfolioDetails[]>>;
 }
 
 export default function Home({ setPortfolioList }: Props) {
@@ -15,7 +15,7 @@ export default function Home({ setPortfolioList }: Props) {
       setIsLoading(false);
     };
     fetchPortfolioList();
-  }, []);
+  }, [setPortfolioList]);
 
   return <div>{isLoading && 'Loading...'}</div>;
 }

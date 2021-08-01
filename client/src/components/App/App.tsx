@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TPortfolio } from '../../types';
+import { PortfolioDetails } from '../../types';
 import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
 import './App.scss';
 import { AddPortfolio } from '../AddPortfolio/AddPortfolio';
@@ -8,10 +8,9 @@ import Portfolio from '../Portfolio/Portfolio';
 import Home from './Home';
 
 function App(): React.ReactElement {
-  const [portfolioList, setPortfolioList] = useState<TPortfolio[]>([]);
-  const [selectedPortfolio, setSelectedPortfolio] = useState<TPortfolio | null>(
-    null
-  );
+  const [portfolioList, setPortfolioList] = useState<PortfolioDetails[]>([]);
+  const [selectedPortfolio, setSelectedPortfolio] =
+    useState<PortfolioDetails | null>(null);
 
   return (
     <Router>
