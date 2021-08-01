@@ -12,20 +12,24 @@ body {
 .button-main,
 input[type='submit'] {
   @include button($blue-60, $blue-70);
-  // border: none;
-  // margin: 1em;
-  // color: $white;
-  // padding: 0.75em 1.5em;
-  // background-color: $blue-60;
-  // &:hover {
-  //   background-color: $blue-70;
-  // }
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type='number'] {
+  -moz-appearance: textfield;
 }
 
 .button-secondary {
   @include button($gray-70, $gray-90);
 }
 
+.warning {
+  color: $alert-60;
+}
 a {
   color: black;
   text-decoration: none;

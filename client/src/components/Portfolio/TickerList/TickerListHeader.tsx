@@ -1,6 +1,6 @@
 import React from 'react';
 
-export function TickerListHeader() {
+export function TickerListHeader(): React.ReactElement {
   return (
     <tr className='stock-ticker'>
       <th>SYMBOL</th>

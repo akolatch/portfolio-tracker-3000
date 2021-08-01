@@ -1,6 +1,6 @@
-@import '../../styles/mixins.scss';
-@import '../../styles/colors.scss';
-@import '../../styles/styles.scss';
+@import '../../../styles/mixins.scss';
+@import '../../../styles/colors.scss';
+@import '../../../styles/styles.scss';
 .stock-ticker {
   display: flex;
   flex-direction: row;
@@ -14,7 +14,9 @@
 .back-spacer {
   margin-right: 15em;
 }
-.front-spacer {
+
+.symbol {
+  text-transform: uppercase;
   margin-right: 3em;
 }
 @mixin tickerInput {

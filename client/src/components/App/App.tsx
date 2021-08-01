@@ -5,7 +5,7 @@ import './App.scss';
 import { AddPortfolio } from '../AddPortfolio/AddPortfolio';
 import { PortfolioList } from '../PortfolioList/PortfolioList';
 import Portfolio from '../Portfolio/Portfolio';
-import Home from './Home';
+import { Loading } from './Loading';
 
 function App(): React.ReactElement {
   const [portfolioList, setPortfolioList] = useState<PortfolioDetails[]>([]);
@@ -32,7 +32,7 @@ function App(): React.ReactElement {
         <main className='main-view'>
           <Switch>
             <Route path='/' exact>
-              <Home setPortfolioList={setPortfolioList} />
+              <Loading setPortfolioList={setPortfolioList} />
             </Route>
             <Route path='/portfolio/new' exact>
               <AddPortfolio />

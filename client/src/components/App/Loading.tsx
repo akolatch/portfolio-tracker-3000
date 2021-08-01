@@ -5,7 +5,7 @@ interface Props {
   setPortfolioList: React.Dispatch<React.SetStateAction<PortfolioDetails[]>>;
 }
 
-export default function Home({ setPortfolioList }: Props) {
+export function Loading({ setPortfolioList }: Props) {
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     const fetchPortfolioList = async () => {

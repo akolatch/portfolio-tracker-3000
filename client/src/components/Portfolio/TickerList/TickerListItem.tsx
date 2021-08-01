@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { useFormInputs } from '../../hooks/useFormInputs';
-import { useUpdateTicker } from '../../hooks/useUpdateTicker';
-import { TickerData, TickerUpdates } from '../../types';
+import { useFormInputs } from '../../../hooks/useFormInputs';
+import { useUpdateTicker } from '../../../hooks/useUpdateTicker';
+import { TickerData, TickerUpdates } from '../../../types';
 import TickerInput from './TickerInput';
 
 interface Props {
@@ -19,7 +19,7 @@ export function TickerListItem({
     purchaseDate: ticker.purchaseDate,
   });
   const [edit, setEdit] = useState(false);
-  const { updateTicker, warning, setWarning } = useUpdateTicker();
+  const { updateTicker } = useUpdateTicker();
 
   const handleEdit = async () => {
     if (!edit) {
@@ -37,7 +37,7 @@ export function TickerListItem({
 
   return (
     <tr className='stock-ticker'>
-      <td className='front-spacer'>{ticker.symbol}</td>
+      <td className='symbol'>{ticker.symbol}</td>
       <td>
         <TickerInput
           onChange={setFormValue}

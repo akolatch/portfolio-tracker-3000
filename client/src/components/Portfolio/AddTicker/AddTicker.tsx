@@ -3,7 +3,7 @@ import { useFormInputs } from '../../../hooks/useFormInputs';
 import { useCreateNewTicker } from '../../../hooks/useCreateNewTicker';
 import { NewTicker } from '../../../types';
 import { TextInput } from '../../TextInput/TextInput';
-
+import './AddTicker.scss';
 interface Props {
   portfolioId: number;
   closeAddForm: () => void;
@@ -37,10 +37,15 @@ export function AddTicker({
     await postNewTicker(portfolioId, newStock, closeAddForm);
   };
 
+  const closeModel = (e: React.MouseEvent) => {
+    if (e.target === e.currentTarget) {
+      closeAddForm();
+    }
+  };
   return (
-    <div className='add-ticker-form'>
-      <h1>Add Ticker</h1>
+    <div className='add-ticker-container' onClick={closeModel}>
       <form action='submit'>
+        <h1>Add Ticker</h1>
         <TextInput
           onChange={setFormValue}
           label='Stock Symbol'
@@ -74,6 +79,9 @@ export function AddTicker({
         />
         {warning && <p className='warning'>{warning}</p>}
         <input type='submit' value='Add Stock' onClick={submitForm} />
+        <button className='button-secondary' onClick={closeAddForm}>
+          Cancel
+        </button>
       </form>
     </div>
   );

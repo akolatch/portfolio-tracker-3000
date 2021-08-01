@@ -1,5 +1,5 @@
 import React from 'react';
-import { PortfolioData } from '../../types';
+import { PortfolioData } from '../../../types';
 import { TickerListItem } from './TickerListItem';
 import './TickerList.scss';
 import { TickerListHeader } from './TickerListHeader';

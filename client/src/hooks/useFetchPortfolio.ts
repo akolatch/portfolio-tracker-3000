@@ -1,11 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { PortfolioData, TickerData } from '../types';
-
-interface PortfolioValues {
-  paid: number;
-  value: number;
-  profit: number;
-}
+import { PortfolioData, PortfolioValues, TickerData } from '../types';
 
 export function useFetchPortfolio(
   id: number

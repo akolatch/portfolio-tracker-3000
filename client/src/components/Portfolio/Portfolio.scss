@@ -1,0 +1,23 @@
+.portfolio-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  h2 {
+    text-transform: uppercase;
+  }
+}
+
+.totals-table {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  tr {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    td {
+      padding: 0 1em;
+    }
+  }
+}

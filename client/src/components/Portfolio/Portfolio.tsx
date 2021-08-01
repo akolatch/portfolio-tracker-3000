@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useFetchPortfolio } from '../../hooks/useFetchPortfolio';
 import { AddTicker } from './AddTicker/AddTicker';
-import { TickerList } from './TickerList';
-
+import { TickerList } from './TickerList/TickerList';
+import { Totals } from './Totals';
+import './Portfolio.scss';
 interface Props {
   name: string | undefined;
   id?: number;
@@ -42,8 +43,8 @@ export default function Portfolio({ name, id = 0 }: Props): React.ReactElement {
   }, [id]);
 
   return (
-    <div>
-      <h3>{name}</h3>
+    <div className='portfolio-container'>
+      <h2>{name}</h2>
       {isLoading ? (
         <div>Loading...</div>
       ) : error.length !== 0 ? (
@@ -51,23 +52,21 @@ export default function Portfolio({ name, id = 0 }: Props): React.ReactElement {
       ) : (
         <div>
           <TickerList tickerList={portfolioData} deleteStock={deleteStock} />
-          <div>
-            <div>{`Total Paid: $${sums.paid}`}</div>
-            <div>{`Current Value: $${sums.value}`}</div>
-            <div>{`Total Profit: $${sums.profit}`}</div>
-          </div>
+          <Totals sums={sums} />
         </div>
       )}
       {addStock ? (
         <AddTicker portfolioId={id} closeAddForm={closeAddForm} />
       ) : (
-        <button className='button-main' onClick={() => setAddStock(true)}>
-          Add Stock
-        </button>
+        <div>
+          <button className='button-main' onClick={() => setAddStock(true)}>
+            Add Stock
+          </button>
+          <button className='button-secondary' onClick={deletePortfolio}>
+            Delete
+          </button>
+        </div>
       )}
-      <button className='button-secondary' onClick={deletePortfolio}>
-        Delete
-      </button>
     </div>
   );
 }
