@@ -2,10 +2,8 @@ import { app } from '../src/server/app';
 import supertest from 'supertest';
 import { Status } from '../src/constants';
 import { Portfolios, Tickers } from '../src/models';
-import { where } from 'sequelize/types';
 const request = supertest(app);
-
-describe('TickerController', () => {
+describe('PUT /ticker/:id', () => {
   it('should reject invalid updates', async () => {
     const portfolio = await Portfolios.findOrCreate({
       where: { name: 'test' },
@@ -78,7 +76,8 @@ describe('TickerController', () => {
     expect(res.status).toBe(Status.NoContent);
     await Tickers.destroy({ where: {} });
   });
-
+});
+describe('DELETE /ticker/:id', () => {
   it('should delete a ticker', async () => {
     const portfolio = await Portfolios.findAll({ where: { name: 'test' } });
     const portfolioId = portfolio[0]?.getDataValue('id');

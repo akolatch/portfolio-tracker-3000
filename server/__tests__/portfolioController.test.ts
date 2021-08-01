@@ -4,8 +4,8 @@ import { Status } from '../src/constants';
 import { Portfolios, Tickers } from '../src/models';
 const request = supertest(app);
 
-describe('Portfolio Controllers', () => {
-  it('should return 200 for /', async () => {
+describe('GET /portfolio', () => {
+  it('should respond with a 200 status code', async () => {
     const res = await request.get('/portfolio');
     expect(res.status).toBe(Status.OK);
   });
@@ -24,7 +24,9 @@ describe('Portfolio Controllers', () => {
     expect(res.body[0].name).toEqual('test');
     expect(res.body[0].id).toBeDefined();
   });
+});
 
+describe('POST /portfolio', () => {
   it('should reject a post request with an invalid body', async () => {
     const invalidBody = [{}, { name: 0 }, { name: '' }];
     for (const invalid of invalidBody) {
@@ -40,119 +42,169 @@ describe('Portfolio Controllers', () => {
     const portfolios = await Portfolios.findAll();
     expect(portfolios.length).toEqual(numPortfolios + 1);
   });
+});
 
-  it('should return 404 if the portfolio id is not found', async () => {
-    const id = 1;
-    const res = await request.post(`/portfolio/${id}`);
-    expect(res.status).toBe(Status.NotFound);
-  });
-
-  it('should reject invalid symbol', async () => {
-    const portfolio = await Portfolios.findOne({ where: { name: 'test' } });
+describe('GET /portfolio/:id', () => {
+  xit('should get a portfolios tickets', async () => {
+    const portfolio = await Portfolios.create({ name: 'test' });
     const id = portfolio?.getDataValue('id');
-    const invalidTicker = [
-      { pricePaid: 1, numShares: 1, purchaseDate: '2021-01-01' },
-      { symbol: '', pricePaid: 1, numShares: 1, purchaseDate: '2021-01-01' },
-      { symbol: 1, pricePaid: 1, numShares: 1, purchaseDate: '2021-01-01' },
-    ];
-    for (const invalid of invalidTicker) {
-      const res = await request.post(`/portfolio/${id}`).send(invalid);
-      expect(res.status).toBe(Status.BadRequest);
-    }
-  });
+    await Tickers.create({
+      symbol: 'IBM',
+      pricePaid: 1,
+      numShares: 1,
+      purchaseDate: '2021-01-01',
+      portfolioId: id,
+    });
+    await Tickers.create({
+      symbol: 'HAS',
+      pricePaid: 1,
+      numShares: 1,
+      purchaseDate: '2021-01-01',
+      portfolioId: id,
+    });
 
-  it('should reject invalid pricePaid', async () => {
-    const portfolio = await Portfolios.findOne({ where: { name: 'test' } });
-    const id = portfolio?.getDataValue('id');
-    const invalidPrice = [
-      { symbol: 'IBM', numShares: 1, purchaseDate: '2021-01-01' },
-      {
-        symbol: 'IBM',
-        pricePaid: '',
+    const res = await request.get(`/portfolio/${id}`);
+    expect(res.status).toBe(Status.OK);
+    const tickers = res.body;
+    expect(tickers).toBeDefined();
+    expect(tickers.length).toBe(2);
+  });
+});
+
+describe('POST /portfolio/:id', () => {
+  describe('should reject a post request with an invalid body', () => {
+    it('should respond with a 404 status code if portfolio id is not found', async () => {
+      const id = 1;
+      const res = await request.post(`/portfolio/${id}`);
+      expect(res.status).toBe(Status.NotFound);
+    });
+
+    it('should reject invalid symbol', async () => {
+      const portfolio = await Portfolios.findOne({ where: { name: 'test' } });
+      const id = portfolio?.getDataValue('id');
+      const invalidTicker = [
+        { pricePaid: 1, numShares: 1, purchaseDate: '2021-01-01' },
+        { symbol: '', pricePaid: 1, numShares: 1, purchaseDate: '2021-01-01' },
+        { symbol: 1, pricePaid: 1, numShares: 1, purchaseDate: '2021-01-01' },
+      ];
+      for (const invalid of invalidTicker) {
+        const res = await request.post(`/portfolio/${id}`).send(invalid);
+        expect(res.status).toBe(Status.BadRequest);
+      }
+    });
+
+    it('should reject invalid pricePaid', async () => {
+      const portfolio = await Portfolios.findOne({ where: { name: 'test' } });
+      const id = portfolio?.getDataValue('id');
+      const invalidPrice = [
+        { symbol: 'IBM', numShares: 1, purchaseDate: '2021-01-01' },
+        {
+          symbol: 'IBM',
+          pricePaid: '',
+          numShares: 1,
+          purchaseDate: '2021-01-01',
+        },
+        {
+          symbol: 'IBM',
+          pricePaid: 0,
+          numShares: 1,
+          purchaseDate: '2021-01-01',
+        },
+      ];
+      for (const invalid of invalidPrice) {
+        const res = await request.post(`/portfolio/${id}`).send(invalid);
+        expect(res.status).toBe(Status.BadRequest);
+      }
+    });
+
+    it('should reject invalid numShares', async () => {
+      const portfolio = await Portfolios.findOne({ where: { name: 'test' } });
+      const id = portfolio?.getDataValue('id');
+      const invalidShares = [
+        { symbol: 'IBM', pricePaid: 1, purchaseDate: '2021-01-01' },
+        {
+          symbol: 'IBM',
+          pricePaid: 1,
+          numShares: '',
+          purchaseDate: '2021-01-01',
+        },
+        {
+          symbol: 'IBM',
+          pricePaid: 1,
+          numShares: 0,
+          purchaseDate: '2021-01-01',
+        },
+      ];
+      for (const invalid of invalidShares) {
+        const res = await request.post(`/portfolio/${id}`).send(invalid);
+        expect(res.status).toBe(Status.BadRequest);
+      }
+    });
+
+    it('should reject invalid purchaseDate', async () => {
+      const portfolio = await Portfolios.findOne({ where: { name: 'test' } });
+      const id = portfolio?.getDataValue('id');
+      const invalidDate = [
+        { symbol: 'IBM', pricePaid: 1, numShares: 1 },
+        { symbol: 'IBM', pricePaid: 1, numShares: 1, purchaseDate: '' },
+        { symbol: 'IBM', pricePaid: 1, numShares: 1, purchaseDate: 0 },
+        {
+          symbol: 'IBM',
+          pricePaid: 1,
+          numShares: 1,
+          purchaseDate: '2021-50-01',
+        },
+      ];
+      for (const invalid of invalidDate) {
+        const res = await request.post(`/portfolio/${id}`).send(invalid);
+        expect(res.status).toBe(Status.BadRequest);
+      }
+    });
+
+    xit('should return 404 not found if ticker Symbol is invalid', async () => {
+      const portfolio = await Portfolios.findOne({ where: { name: 'test' } });
+      const id = portfolio?.getDataValue('id');
+      const res = await request.post(`/portfolio/${id}`).send({
+        symbol: 'bbbbbbbbb',
+        pricePaid: 1,
         numShares: 1,
         purchaseDate: '2021-01-01',
-      },
-      { symbol: 'IBM', pricePaid: 0, numShares: 1, purchaseDate: '2021-01-01' },
-    ];
-    for (const invalid of invalidPrice) {
-      const res = await request.post(`/portfolio/${id}`).send(invalid);
-      expect(res.status).toBe(Status.BadRequest);
-    }
+      });
+      expect(res.status).toBe(Status.NotFound);
+    });
   });
 
-  it('should reject invalid numShares', async () => {
-    const portfolio = await Portfolios.findOne({ where: { name: 'test' } });
-    const id = portfolio?.getDataValue('id');
-    const invalidShares = [
-      { symbol: 'IBM', pricePaid: 1, purchaseDate: '2021-01-01' },
-      {
+  describe('should accept a post request with valid body', () => {
+    it('should save a ticker', async () => {
+      const portfolio = await Portfolios.findOne({ where: { name: 'test' } });
+      const id = portfolio?.getDataValue('id');
+      await Tickers.destroy({ where: { portfolioId: id } });
+      const res = await request.post(`/portfolio/${id}`).send({
         symbol: 'IBM',
         pricePaid: 1,
-        numShares: '',
+        numShares: 1,
         purchaseDate: '2021-01-01',
-      },
-      { symbol: 'IBM', pricePaid: 1, numShares: 0, purchaseDate: '2021-01-01' },
-    ];
-    for (const invalid of invalidShares) {
-      const res = await request.post(`/portfolio/${id}`).send(invalid);
-      expect(res.status).toBe(Status.BadRequest);
-    }
-  });
-
-  it('should reject invalid purchaseDate', async () => {
-    const portfolio = await Portfolios.findOne({ where: { name: 'test' } });
-    const id = portfolio?.getDataValue('id');
-    const invalidDate = [
-      { symbol: 'IBM', pricePaid: 1, numShares: 1 },
-      { symbol: 'IBM', pricePaid: 1, numShares: 1, purchaseDate: '' },
-      { symbol: 'IBM', pricePaid: 1, numShares: 1, purchaseDate: 0 },
-      { symbol: 'IBM', pricePaid: 1, numShares: 1, purchaseDate: '2021-50-01' },
-    ];
-    for (const invalid of invalidDate) {
-      const res = await request.post(`/portfolio/${id}`).send(invalid);
-      expect(res.status).toBe(Status.BadRequest);
-    }
-  });
-
-  xit('should return 404 not found if ticker Symbol is invalid', async () => {
-    const portfolio = await Portfolios.findOne({ where: { name: 'test' } });
-    const id = portfolio?.getDataValue('id');
-    const res = await request.post(`/portfolio/${id}`).send({
-      symbol: 'bbbbbbbbb',
-      pricePaid: 1,
-      numShares: 1,
-      purchaseDate: '2021-01-01',
+      });
+      expect(res.status).toBe(Status.Created);
+      const ticker = await Tickers.findOne({ where: { symbol: 'IBM' } });
+      expect(ticker).toBeDefined();
     });
-    expect(res.status).toBe(Status.NotFound);
-  });
 
-  it('should save a ticker', async () => {
-    const portfolio = await Portfolios.findOne({ where: { name: 'test' } });
-    const id = portfolio?.getDataValue('id');
-    await Tickers.destroy({ where: { portfolioId: id } });
-    const res = await request.post(`/portfolio/${id}`).send({
-      symbol: 'IBM',
-      pricePaid: 1,
-      numShares: 1,
-      purchaseDate: '2021-01-01',
+    it('should return accepted if ticker already exists', async () => {
+      const portfolio = await Portfolios.findOne({ where: { name: 'test' } });
+      const id = portfolio?.getDataValue('id');
+      const res = await request.post(`/portfolio/${id}`).send({
+        symbol: 'IBM',
+        pricePaid: 1,
+        numShares: 1,
+        purchaseDate: '2021-01-01',
+      });
+      expect(res.status).toBe(Status.Accepted);
     });
-    expect(res.status).toBe(Status.Created);
-    const ticker = await Tickers.findOne({ where: { symbol: 'IBM' } });
-    expect(ticker).toBeDefined();
   });
+});
 
-  it('should return accepted if ticker already exists', async () => {
-    const portfolio = await Portfolios.findOne({ where: { name: 'test' } });
-    const id = portfolio?.getDataValue('id');
-    const res = await request.post(`/portfolio/${id}`).send({
-      symbol: 'IBM',
-      pricePaid: 1,
-      numShares: 1,
-      purchaseDate: '2021-01-01',
-    });
-    expect(res.status).toBe(Status.Accepted);
-  });
-
+describe('DELETE /portfolio/:id', () => {
   it('should delete the portfolio', async () => {
     const portfolio = await Portfolios.findOne({ where: { name: 'test' } });
     const id = portfolio?.getDataValue('id');
@@ -194,29 +246,5 @@ describe('Portfolio Controllers', () => {
       where: { portfolioId: id },
     });
     expect(tickersCountAfter).toEqual(0);
-  });
-  xit('should get a portfolios tickets', async () => {
-    const portfolio = await Portfolios.create({ name: 'test' });
-    const id = portfolio?.getDataValue('id');
-    await Tickers.create({
-      symbol: 'IBM',
-      pricePaid: 1,
-      numShares: 1,
-      purchaseDate: '2021-01-01',
-      portfolioId: id,
-    });
-    await Tickers.create({
-      symbol: 'HAS',
-      pricePaid: 1,
-      numShares: 1,
-      purchaseDate: '2021-01-01',
-      portfolioId: id,
-    });
-
-    const res = await request.get(`/portfolio/${id}`);
-    expect(res.status).toBe(Status.OK);
-    const tickers = res.body;
-    expect(tickers).toBeDefined();
-    expect(tickers.length).toBe(2);
   });
 });

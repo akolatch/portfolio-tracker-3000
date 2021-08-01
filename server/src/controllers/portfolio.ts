@@ -62,7 +62,6 @@ export const portfolio = {
 
       // check if the request body is valid
       if (await tickerIsInvalid({ symbol, ...updates })) {
-        console.log({ symbol, ...updates });
         res.status(Status.BadRequest).json({
           message:
             'One or more attribute of your ticker data was missing or incorrect',

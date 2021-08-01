@@ -31,7 +31,6 @@ export const ticker = {
       }
 
       // update the ticker
-      console.log(updates);
       await Tickers.update(updates, { where: { id } });
       res.sendStatus(Status.NoContent);
     } catch (err) {
