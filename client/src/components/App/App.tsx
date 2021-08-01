@@ -14,18 +14,22 @@ function App(): React.ReactElement {
 
   return (
     <Router>
-      <div>
-        <Link to='/'>
-          <h1>Portfolio Tracker 3000</h1>
-        </Link>
-        <Link className='button' to='/portfolio/new'>
-          Add Portfolio
-        </Link>
-        <PortfolioList
-          portfolioList={portfolioList}
-          setSelectedPortfolio={setSelectedPortfolio}
-        />
-        <main>
+      <div className='grid-container'>
+        <header className='header'>
+          <Link to='/'>
+            <h1>Portfolio Tracker 3000</h1>
+          </Link>
+        </header>
+        <section className='sidebar'>
+          <Link className='button-main' to='/portfolio/new'>
+            Add Portfolio
+          </Link>
+          <PortfolioList
+            portfolioList={portfolioList}
+            setSelectedPortfolio={setSelectedPortfolio}
+          />
+        </section>
+        <main className='main-view'>
           <Switch>
             <Route path='/' exact>
               <Home setPortfolioList={setPortfolioList} />

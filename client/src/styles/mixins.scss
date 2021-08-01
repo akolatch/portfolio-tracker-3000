@@ -1,10 +1,13 @@
 @import './colors.scss';
 
-@mixin formInput {
+@mixin formInput($padding) {
   border: 2px solid $gray-10;
   border-bottom: 2px solid $gray-50;
   background-color: $gray-10;
-  padding: 0.75em 1.5em;
+  padding-top: $padding;
+  padding-bottom: $padding;
+  padding-left: 1.5em;
+  padding-right: 1.5em;
   &::placeholder {
     color: $gray-50;
   }

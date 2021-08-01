@@ -5,14 +5,10 @@ body {
   margin: 0;
   color: $gray-90;
   font-family: 'Roboto', sans-serif;
-  // -webkit-font-smoothing: antialiased;
-  // -moz-osx-font-smoothing: grayscale;
 }
 
-.button,
+.button-main,
 button,
-input[type='button'],
-input[type='reset'],
 input[type='submit'] {
   border: none;
   margin: 1em;
@@ -24,20 +20,27 @@ input[type='submit'] {
   }
 }
 
-input[type='text'],
-// input[type='date'],
-textarea,
-select {
-  border: none;
-  border-bottom: 2px solid $gray-50;
-  background-color: $gray-10;
-  padding: 0.75em 1.5em;
-  &::placeholder {
-    color: $gray-50;
-  }
-}
+// input[type='text'],
+// // input[type='date'],
+// textarea,
+// select {
+//   border: none;
+//   border-bottom: 2px solid $gray-50;
+//   background-color: $gray-10;
+//   padding: 0.75em 1.5em;
+//   &::placeholder {
+//     color: $gray-50;
+//   }
+// }
 
 a {
   color: black;
   text-decoration: none;
+}
+
+ul {
+  padding: 0;
+}
+li {
+  list-style: none;
 }

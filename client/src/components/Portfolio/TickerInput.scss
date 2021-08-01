@@ -1,13 +1,23 @@
 @import '../../styles/mixins.scss';
 @import '../../styles/colors.scss';
-.ticker-input {
-  background-color: none;
+
+@mixin tickerInput {
   &:disabled {
-    background-color: white;
+    background-color: $white;
     border: none;
   }
+}
+.ticker-number-input {
+  @include tickerInput();
   &-edit {
-    @extend .ticker-input;
-    @include formInput;
+    @extend .ticker-number-input;
+    @include formInput(0.94em);
+  }
+}
+.ticker-date-input {
+  @include tickerInput();
+  &-edit {
+    @extend .ticker-date-input;
+    @include formInput(0.75em);
   }
 }

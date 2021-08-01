@@ -19,7 +19,7 @@ export default function TickerInput({
 }: Props): React.ReactElement<any> {
   return (
     <input
-      className={edit ? 'ticker-input-edit' : 'ticker-input'}
+      className={edit ? `ticker-${type}-input-edit` : `ticker-${type}-input`}
       type={type}
       aria-label={label}
       value={value}

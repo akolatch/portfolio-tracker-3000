@@ -35,7 +35,7 @@ export function TickerListItem({
     await updateTicker(ticker.id, updates, setEdit);
   };
   return (
-    <li>
+    <li className='stock-ticker'>
       <span>{ticker.symbol}</span>
       <span>{ticker.purchaseDate}</span>
       <TickerInput
