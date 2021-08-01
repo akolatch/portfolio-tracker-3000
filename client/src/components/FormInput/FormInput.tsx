@@ -30,6 +30,7 @@ export function FormInput({
     <div className={invalid ? 'text-input-invalid' : 'text-input'}>
       <label htmlFor={name}>{label}</label>
       <input
+        data-testid={name}
         aria-label={label}
         type={type}
         name={name || label}

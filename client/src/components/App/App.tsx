@@ -14,7 +14,7 @@ function App(): React.ReactElement {
 
   return (
     <Router>
-      <div className='grid-container'>
+      <div className='grid-container' data-testid='app'>
         <header className='header'>
           <Link to='/'>
             <h1>Portfolio Tracker 3000</h1>
