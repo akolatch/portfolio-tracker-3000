@@ -7,6 +7,7 @@ interface Props {
   deleteStock: (tickerId: number) => Promise<void>;
 }
 export function TickerList({ tickerList, deleteStock }: Props) {
+  console.log(tickerList);
   return (
     <div>
       <ul>

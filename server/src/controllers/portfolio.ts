@@ -8,11 +8,13 @@ import { getTicketData } from '../lib/getTicketData';
 import { invalidSymbol } from './helpers/invalidSymbol';
 
 export const portfolio = {
-  // GET /portfolios return a list of all portfolios
+  // GET /portfolio return a list of all portfolios
   getAll: async (req: Request, res: Response) => {
     try {
       // Get all portfolios
-      const portfolios = await Portfolios.findAll();
+      const portfolios = await Portfolios.findAll({
+        attributes: { exclude: ['createdAt', 'updatedAt'] },
+      });
       res.status(Status.OK).json(portfolios);
     } catch (err) {
       console.log('error at portfolio.getAll: ', err);

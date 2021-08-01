@@ -11,6 +11,7 @@ export default function Home({ setPortfolioList }: Props) {
     const fetchPortfolioList = async () => {
       const response = await fetch('/portfolio');
       const data = await response.json();
+
       setPortfolioList(data);
       setIsLoading(false);
     };
