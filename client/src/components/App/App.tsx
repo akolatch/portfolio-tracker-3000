@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { PortfolioDetails } from '../../types';
 import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
 import { AddPortfolio } from '../AddPortfolio/AddPortfolio';
-import Portfolio from '../Portfolio/Portfolio';
+import { Portfolio } from '../Portfolio/Portfolio';
 import { Loading } from './Loading';
 import { Sidebar } from '../Sidebar/Sidebar';
 import './App.scss';

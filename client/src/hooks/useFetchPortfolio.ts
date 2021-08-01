@@ -15,28 +15,33 @@ export function useFetchPortfolio(
 
   // memoize the fetch function so that it can be passed to useEffect and as part of the results will be re evaluated when ID changes
   const fetchPortfolio = useCallback(async () => {
-    const response = await fetch(`/portfolio/${id}`);
-    if (response.status === 200) {
-      const portfolio = await response.json();
-      const [paid, value] = portfolio.reduce(
-        (
-          acc: [number, number],
-          { pricePaid, currentPrice, numShares }: TickerData
-        ) => {
-          return [
-            acc[0] + parseFloat(pricePaid) * numShares,
-            acc[1] + parseFloat(currentPrice) * numShares,
-          ];
-        },
-        [0, 0]
-      );
-      setSums({ paid, value, profit: value - paid });
-      setPortfolioData(portfolio);
-      setError('');
-    } else if (response.status === 404) {
-      setError('Start Adding Stocks');
-    } else {
-      setError('Slow Down');
+    try {
+      const response = await fetch(`/portfolio/${id}`);
+      if (response.status === 200) {
+        const portfolio = await response.json();
+        const [paid, value] = portfolio.reduce(
+          (
+            acc: [number, number],
+            { pricePaid, currentPrice, numShares }: TickerData
+          ) => {
+            return [
+              acc[0] + parseFloat(pricePaid) * numShares,
+              acc[1] + parseFloat(currentPrice) * numShares,
+            ];
+          },
+          [0, 0]
+        );
+        setSums({ paid, value, profit: value - paid });
+        setPortfolioData(portfolio);
+        setError('');
+      } else if (response.status === 404) {
+        setError('Start Adding Stocks');
+      } else {
+        setError('Slow Down');
+      }
+    } catch (e) {
+      console.log(e.message);
+      setError('something went wrong');
     }
     setIsLoading(false);
   }, [id]);

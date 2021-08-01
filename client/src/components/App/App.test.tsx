@@ -1,9 +1,17 @@
 import React from 'react';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  cleanup,
+} from '@testing-library/react';
 import App from './App';
 import { debug } from 'console';
 
 describe('App', () => {
+  afterEach(cleanup);
+
   test('renders learn react link', () => {
     render(<App />);
     const linkElement = screen.getByTestId('app');

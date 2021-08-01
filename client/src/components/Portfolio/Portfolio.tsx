@@ -9,7 +9,7 @@ interface Props {
   name: string | undefined;
   id?: number;
 }
-export default function Portfolio({ name, id = 0 }: Props): React.ReactElement {
+export function Portfolio({ name, id = 0 }: Props): React.ReactElement {
   const [portfolioData, setPortfolioData, sums, isLoading, error] =
     useFetchPortfolio(id);
   const [addStock, setAddStock] = useState(false);
@@ -38,7 +38,7 @@ export default function Portfolio({ name, id = 0 }: Props): React.ReactElement {
   }, [id]);
 
   return (
-    <div className='portfolio-container'>
+    <div className='portfolio-container' data-testid='portfolio-container'>
       <h2>{name}</h2>
       {isLoading ? (
         <div>Loading...</div>
