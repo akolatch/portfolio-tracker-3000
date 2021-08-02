@@ -44,7 +44,9 @@ export function TickerListItem({
 
   return (
     <tr className='stock-ticker'>
-      <td className='symbol'>{ticker.symbol}</td>
+      <td className='symbol' data-testid={ticker.symbol}>
+        {ticker.symbol}
+      </td>
       <td>
         <TickerInput
           onChange={setFormValue}

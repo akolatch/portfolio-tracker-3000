@@ -7,32 +7,9 @@ import {
   waitFor,
 } from '@testing-library/react';
 import { Portfolio } from './Portfolio';
-import { BrowserRouter as Router } from 'react-router-dom';
 
-global.fetch = jest.fn(() => {
-  return Promise.resolve({
-    json: () =>
-      Promise.resolve([
-        {
-          id: 1,
-          ticker: 'IBM',
-          currentPrice: '140.9600',
-          numShares: 30,
-          pricePaid: '100.00',
-          purchaseDate: '2021-07-31',
-        },
-        {
-          id: 2,
-          ticker: 'HAS',
-          currentPrice: '99.4400',
-          numShares: 15,
-          pricePaid: '75.00',
-          purchaseDate: '2021-07-31',
-        },
-      ]),
-    status: 200,
-  });
-});
+
+global.fetch = jest.fn();
 
 describe('Portfolio', () => {
   afterEach(cleanup);
