@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, cleanup, screen } from '@testing-library/react';
+import { render, cleanup, screen, fireEvent } from '@testing-library/react';
 import { TickerList } from './TickerList';
 
 describe('TickerListItem', () => {
@@ -12,7 +12,7 @@ describe('TickerListItem', () => {
   });
 
   it('should render list of stocks', () => {
-    const { getByText } = render(
+    render(
       <TickerList
         tickerList={[
           {
@@ -34,7 +34,7 @@ describe('TickerListItem', () => {
         ]}
       />
     );
-    const tickerListItem = getByText('SYMBOL');
+    const tickerListItem = screen.getByText('SYMBOL');
     const IBM = screen.getByTestId('IBM');
     const HAS = screen.getByTestId('HAS');
     expect(tickerListItem).toBeInTheDocument();
@@ -42,8 +42,8 @@ describe('TickerListItem', () => {
     expect(HAS).toBeInTheDocument();
   });
 
-  it('should render list of stocks', () => {
-    const { getByText } = render(
+  it('should switch to edit Mode', async () => {
+    render(
       <TickerList
         tickerList={[
           {
@@ -54,22 +54,13 @@ describe('TickerListItem', () => {
             pricePaid: '100.00',
             purchaseDate: '2021-07-31',
           },
-          {
-            id: 2,
-            symbol: 'HAS',
-            currentPrice: '99.4400',
-            numShares: 15,
-            pricePaid: '75.00',
-            purchaseDate: '2021-07-31',
-          },
         ]}
       />
     );
-    const tickerListItem = getByText('SYMBOL');
-    const IBM = screen.getByTestId('IBM');
-    const HAS = screen.getByTestId('HAS');
-    expect(tickerListItem).toBeInTheDocument();
-    expect(IBM).toBeInTheDocument();
-    expect(HAS).toBeInTheDocument();
+    const editButton = screen.getByText('Edit');
+    expect(editButton).toBeInTheDocument();
+    await fireEvent.click(editButton);
+    const doneButton = screen.getByText('Done');
+    expect(doneButton).toBeInTheDocument();
   });
 });

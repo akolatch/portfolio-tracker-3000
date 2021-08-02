@@ -81,7 +81,11 @@ export function TickerListItem({
         2
       )}`}</td>
       <td className='list-button'>
-        <button className='button-main' onClick={handleEdit}>
+        <button
+          data-testid='edit-button'
+          className='button-main'
+          onClick={handleEdit}
+        >
           {edit ? 'Done ' : 'Edit'}
         </button>
 
