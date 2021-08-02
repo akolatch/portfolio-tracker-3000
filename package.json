@@ -1,0 +1,9 @@
+{
+  "name": "portfolio-tracker-3000",
+  "version": "1.0.0",
+  "description": "Simple portfolio tracking app",
+  "main": "index.js",
+  "repository": "https://github.com/akolatch/portfolio-tracker-3000.git",
+  "author": "akolatch <aaron.kolatch@gmail.com>",
+  "license": "MIT"
+}
