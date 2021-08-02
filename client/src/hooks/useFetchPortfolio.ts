@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { API_URL } from '../constants/api';
+import { getPortfolio } from '../lib/fetch';
 import { PortfolioData, PortfolioValues, TickerData } from '../types';
 
 export function useFetchPortfolio(
@@ -17,10 +17,12 @@ export function useFetchPortfolio(
   // memoize the fetch function so that it can be passed to useEffect and as part of the results will be re evaluated when ID changes
   const fetchPortfolio = useCallback(async () => {
     try {
-      const response = await fetch(`${API_URL}portfolio/${id}`);
+      const response = await getPortfolio(id);
 
       if (response.status === 200) {
         const portfolio = await response.json();
+
+        // calculate value of portfolio
         const [paid, value] = portfolio.reduce(
           (
             acc: [number, number],
@@ -33,6 +35,7 @@ export function useFetchPortfolio(
           },
           [0, 0]
         );
+
         setSums({ paid, value, profit: value - paid });
         setPortfolioData(portfolio);
         setError('');

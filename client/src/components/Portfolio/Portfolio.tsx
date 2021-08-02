@@ -5,28 +5,26 @@ import { AddTicker } from './AddTicker/AddTicker';
 import { TickerList } from './TickerList/TickerList';
 import { Totals } from './Totals';
 import './Portfolio.scss';
-import { API_URL } from '../../constants/api';
+import { deletePortfolio, deleteTicker } from '../../lib/fetch';
+
 interface Props {
   name: string | undefined;
   id?: number;
 }
+
 export function Portfolio({ name, id = 0 }: Props): React.ReactElement {
   const [portfolioData, setPortfolioData, sums, isLoading, error] =
     useFetchPortfolio(id);
   const [addStock, setAddStock] = useState(false);
   const history = useHistory();
 
-  const deletePortfolio = async () => {
-    await fetch(`${API_URL}portfolio/${id}`, {
-      method: 'DELETE',
-    });
+  const removePortfolio = async () => {
+    await deletePortfolio(id);
     history.push('/');
   };
 
-  const deleteStock = async (tickerId: number) => {
-    await fetch(`${API_URL}ticker/${tickerId}`, {
-      method: 'DELETE',
-    });
+  const removeStock = async (tickerId: number) => {
+    await deleteTicker(tickerId);
     setPortfolioData();
   };
 
@@ -49,7 +47,7 @@ export function Portfolio({ name, id = 0 }: Props): React.ReactElement {
         <div>
           <TickerList
             tickerList={portfolioData}
-            deleteStock={deleteStock}
+            deleteStock={removeStock}
             setPortfolioData={setPortfolioData}
           />
           <Totals sums={sums} />
@@ -64,13 +62,14 @@ export function Portfolio({ name, id = 0 }: Props): React.ReactElement {
       ) : (
         <div>
           <button
+            disabled={portfolioData.length === 5}
             data-testid='open-add-stock-form'
             className='button-main'
             onClick={() => setAddStock(true)}
           >
             Add Stock
           </button>
-          <button className='button-secondary' onClick={deletePortfolio}>
+          <button className='button-secondary' onClick={removePortfolio}>
             Delete
           </button>
         </div>

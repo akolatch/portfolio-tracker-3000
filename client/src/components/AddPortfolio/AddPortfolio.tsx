@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { API_URL } from '../../constants/api';
+
 import { useFormInputs } from '../../hooks/useFormInputs';
+import { createPortfolio } from '../../lib/fetch';
 import { FormInput } from '../FormInput/FormInput';
 
 export function AddPortfolio() {
@@ -15,13 +16,7 @@ export function AddPortfolio() {
       return;
     }
     try {
-      await fetch(`${API_URL}portfolio`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formValue),
-      });
+      await createPortfolio(formValue);
       setWarning('');
       history.push('/');
     } catch (err) {

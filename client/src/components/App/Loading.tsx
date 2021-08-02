@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { API_URL } from '../../constants/api';
+import { getPortfolioList } from '../../lib/fetch';
 import { PortfolioDetails } from '../../types';
 
 interface Props {
@@ -10,7 +10,7 @@ export function Loading({ setPortfolioList }: Props) {
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     const fetchPortfolioList = async () => {
-      const response = await fetch(`${API_URL}portfolio`);
+      const response = await getPortfolioList();
       const data = await response.json();
 
       setPortfolioList(data);

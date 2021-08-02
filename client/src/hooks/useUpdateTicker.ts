@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { API_URL } from '../constants/api';
+import { updateStock } from '../lib/fetch';
 import { TickerUpdates } from '../types';
 
 export function useUpdateTicker() {
@@ -10,13 +10,7 @@ export function useUpdateTicker() {
     updates: TickerUpdates,
     cb: () => void
   ) => {
-    const result = await fetch(`${API_URL}ticker/${id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(updates),
-    });
+    const result = await updateStock(id, updates);
     if (result.status === 404 || result.status === 400) {
       const data = await result.json();
       setWarning(data.message);
