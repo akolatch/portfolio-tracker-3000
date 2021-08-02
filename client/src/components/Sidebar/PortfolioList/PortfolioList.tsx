@@ -15,7 +15,9 @@ export function PortfolioList({
 }: Props): React.ReactElement {
   return (
     <ul className='portfolio-list-container'>
-      <h2>Portfolios</h2>
+      <li>
+        <h2>Portfolios</h2>
+      </li>
       {portfolioList.map((portfolio) => (
         <PortfolioListItem
           key={portfolio.id}
