@@ -12,7 +12,6 @@ export function useFormInputs(
   const [inputFields, setInputFields] = useState<InputFields>(initialState);
 
   const onchange = (event: ChangeEvent<HTMLInputElement>) => {
-    console.log(inputFields);
     setInputFields((prevState) => ({
       ...prevState,
       [event.target.name]: event.target.value,
@@ -22,7 +21,6 @@ export function useFormInputs(
   const invalidForm = (inputFields: InputFields): boolean => {
     for (const key in inputFields) {
       if (inputFields[key] === '' || inputFields[key] === '0') {
-        console.log(key);
         return true;
       }
     }

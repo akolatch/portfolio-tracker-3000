@@ -9,11 +9,7 @@ import {
 import { AddPortfolio } from './AddPortfolio';
 import { BrowserRouter as Router } from 'react-router-dom';
 
-global.fetch = jest.fn(() =>
-  Promise.resolve({
-    json: () => Promise.resolve({}),
-  })
-);
+global.fetch = jest.fn();
 
 describe('AddPortfolio', () => {
   afterEach(cleanup);
@@ -33,6 +29,12 @@ describe('AddPortfolio', () => {
   });
 
   it('calls fetch when submitted', async () => {
+    fetch.mockReset();
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve({}),
+      status: 200,
+    });
+
     render(
       <Router>
         <AddPortfolio />
@@ -47,5 +49,6 @@ describe('AddPortfolio', () => {
       fireEvent.click(submit);
     });
     expect(fetch).toHaveBeenCalled();
+    expect(fetch.mock.calls.length).toBe(1);
   });
 });
