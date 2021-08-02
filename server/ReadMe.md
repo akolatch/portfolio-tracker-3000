@@ -7,7 +7,7 @@
 Return:
 
 - Status: `200 OK`
-- Data: Array of all portfolios 
+- Data: Array of all portfolios
 
 ```javascript
 [
@@ -22,15 +22,11 @@ Return:
 ];
 ```
 
-Errors: 
+Errors:
 
 | Status | Type           | Message |
 | ------ | -------------- | ------- |
 | 500    | Internal Error | N/A     |
-
-
-
-
 
 ###### POST: `'/portfolio'`
 
@@ -42,19 +38,17 @@ Return:
 
 - Status: `201 CREATED`
 
-Errors: 
+Errors:
 
 | Status | Type           | Message                        |
 | ------ | -------------- | ------------------------------ |
 | 400    | Bad Request    | `"Portfolio name is required"` |
 | 500    | Internal Error | N/A                            |
 
-
-
 ###### GET: `'/portfolio/:id'`
 
-| Parameter | Type   | In   | Description                                             | Required |
-| --------- | ------ | ---- | ------------------------------------------------------- | -------- |
+| Parameter | Type   | In   | Description                                              | Required |
+| --------- | ------ | ---- | -------------------------------------------------------- | -------- |
 | id        | Number | path | The `id` of the portfolio who's stocks are being fetched | True     |
 
 Return:
@@ -66,7 +60,7 @@ Return:
 [
   {
     id: 1,
-    ticker: 'IBM',
+    symbol: 'IBM',
     currentPrice: '140.9600',
     numShares: 30,
     pricePaid: '100.00',
@@ -74,23 +68,21 @@ Return:
   },
   {
     id: 2,
-    ticker: 'HAS',
+    symbol: 'HAS',
     currentPrice: '99.4400',
     numShares: 15,
     pricePaid: '75.00',
     purchaseDate: '2021-07-31',
   },
-]
+];
 ```
 
-Errors: 
+Errors:
 
 | Status | Type           | Message                     |
 | ------ | -------------- | --------------------------- |
 | 404    | Not Found      | `"Portfolio appears empty"` |
 | 500    | Internal Error | N/A                         |
-
-
 
 ###### POST: `'/portfolio/:id'`
 
@@ -100,22 +92,20 @@ Errors:
 | symbol       | String | Body | Symbol of the Stock being added                        | True     |
 | numShares    | Number | Body | number of shares owned                                 | True     |
 | pricePaid    | Number | Body | price paid for single share                            | True     |
-| purchaseDate | String | Body | date of purchase formatted `yyyy-mm-dd`                 | True     |
+| purchaseDate | String | Body | date of purchase formatted `yyyy-mm-dd`                | True     |
 
 Return:
 
-- Status: `201 CREATED` or `202 ACCEPTED` 
+- Status: `201 CREATED` or `202 ACCEPTED`
 
-Errors: 
+Errors:
 
-| Status | Type           | Message                                                      |
-| ------ | -------------- | ------------------------------------------------------------ |
+| Status | Type           | Message                                                                |
+| ------ | -------------- | ---------------------------------------------------------------------- |
 | 400    | Bad Request    | `"One or more attribute of your ticker data was missing or incorrect"` |
-| 404    | Not Found      | `"Portfolio not found"`                                      |
-| 404    | Not Found      | `"Could not find the ticker you were looking for"`           |
-| 500    | Internal Error | N/A                                                          |
-
-
+| 404    | Not Found      | `"Portfolio not found"`                                                |
+| 404    | Not Found      | `"Could not find the ticker you were looking for"`                     |
+| 500    | Internal Error | N/A                                                                    |
 
 ###### DELETE: `'/portfolio/:id'`
 
@@ -127,13 +117,11 @@ Return:
 
 - Status: `202 ACCEPTED`
 
-Errors: 
+Errors:
 
 | Status | Type           | Message |
 | ------ | -------------- | ------- |
 | 500    | Internal Error | N/A     |
-
-
 
 ###### PUT: `/ticker/:id`
 
@@ -142,25 +130,21 @@ Errors:
 | id           | Number | path | The `id` of the stock ticker to be updated | True     |
 | numShares    | Number | Body | number of shares owned                     | False    |
 | pricePaid    | Number | Body | price paid for single share                | False    |
-| purchaseDate | String | Body | date of purchase formatted `yyyy-mm-dd`     | False    |
+| purchaseDate | String | Body | date of purchase formatted `yyyy-mm-dd`    | False    |
 
 `*must include at least on update field in body`
-
-
 
 Return:
 
 - Status: `204 NO CONTENT`
 
-Errors: 
+Errors:
 
 | Status | Type           | Message                             |
 | ------ | -------------- | ----------------------------------- |
 | 400    | Bad Request    | `"Must include at least on update"` |
 | 404    | Not Found      | `"Ticker not found"`                |
 | 500    | Internal Error | N/A                                 |
-
-
 
 ###### DELETE: `'/ticker/:id'`
 
@@ -172,7 +156,7 @@ Return:
 
 - Status: `202 ACCEPTED`
 
-Errors: 
+Errors:
 
 | Status | Type           | Message |
 | ------ | -------------- | ------- |

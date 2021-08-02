@@ -90,7 +90,7 @@ Return:
 [
   {
     id: 1,
-    ticker: 'IBM',
+    symbol: 'IBM',
     currentPrice: '140.9600',
     numShares: 30,
     pricePaid: '100.00',
@@ -98,7 +98,7 @@ Return:
   },
   {
     id: 2,
-    ticker: 'HAS',
+    symbol: 'HAS',
     currentPrice: '99.4400',
     numShares: 15,
     pricePaid: '75.00',

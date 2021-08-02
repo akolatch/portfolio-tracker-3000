@@ -12,13 +12,12 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 1000;
+
   form {
     width: fit-content;
     height: fit-content;
     padding: 3em;
     border: 2px solid $gray-90;
     background-color: $white;
-    z-index: 1001;
   }
 }
