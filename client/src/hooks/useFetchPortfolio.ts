@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import { API_URL } from '../constants/api';
 import { PortfolioData, PortfolioValues, TickerData } from '../types';
 
 export function useFetchPortfolio(
@@ -16,7 +17,7 @@ export function useFetchPortfolio(
   // memoize the fetch function so that it can be passed to useEffect and as part of the results will be re evaluated when ID changes
   const fetchPortfolio = useCallback(async () => {
     try {
-      const response = await fetch(`/portfolio/${id}`);
+      const response = await fetch(`${API_URL}portfolio/${id}`);
 
       if (response.status === 200) {
         const portfolio = await response.json();

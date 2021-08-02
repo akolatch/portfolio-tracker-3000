@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { API_URL } from '../constants/api';
 import { NewTicker } from '../types';
 
 export function useCreateNewTicker(): {
@@ -17,7 +18,7 @@ export function useCreateNewTicker(): {
     stock: NewTicker,
     cb: () => void
   ) => {
-    const result = await fetch(`/portfolio/${portfolioId}`, {
+    const result = await fetch(`${API_URL}portfolio/${portfolioId}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

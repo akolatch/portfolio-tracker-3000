@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { API_URL } from '../constants/api';
 import { TickerUpdates } from '../types';
 
 export function useUpdateTicker() {
@@ -9,7 +10,7 @@ export function useUpdateTicker() {
     updates: TickerUpdates,
     cb: () => void
   ) => {
-    const result = await fetch(`/ticker/${id}`, {
+    const result = await fetch(`${API_URL}ticker/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

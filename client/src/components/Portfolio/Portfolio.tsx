@@ -5,6 +5,7 @@ import { AddTicker } from './AddTicker/AddTicker';
 import { TickerList } from './TickerList/TickerList';
 import { Totals } from './Totals';
 import './Portfolio.scss';
+import { API_URL } from '../../constants/api';
 interface Props {
   name: string | undefined;
   id?: number;
@@ -16,14 +17,14 @@ export function Portfolio({ name, id = 0 }: Props): React.ReactElement {
   const history = useHistory();
 
   const deletePortfolio = async () => {
-    await fetch(`/portfolio/${id}`, {
+    await fetch(`${API_URL}portfolio/${id}`, {
       method: 'DELETE',
     });
     history.push('/');
   };
 
   const deleteStock = async (tickerId: number) => {
-    await fetch(`/ticker/${tickerId}`, {
+    await fetch(`${API_URL}ticker/${tickerId}`, {
       method: 'DELETE',
     });
     setPortfolioData();
