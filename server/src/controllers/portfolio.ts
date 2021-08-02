@@ -42,61 +42,6 @@ export const portfolio = {
     }
   },
 
-  // POST /portfolios/:id add a stock ticker to a portfolio
-  addTicker: async (req: Request, res: Response) => {
-    const portfolioId = req.params.id;
-    try {
-      // check if portfolio exists
-      const exists = await Portfolios.findByPk(portfolioId);
-      if (exists === null) {
-        res.status(Status.NotFound).json({ message: 'Portfolio not found' });
-        return;
-      }
-
-      const { symbol } = req.body;
-      const updates = {
-        numShares: req.body.numShares,
-        pricePaid: req.body.pricePaid,
-        purchaseDate: req.body.purchaseDate,
-      };
-
-      // check if the request body is valid
-      if (await tickerIsInvalid({ symbol, ...updates })) {
-        res.status(Status.BadRequest).json({
-          message:
-            'One or more attribute of your ticker data was missing or incorrect',
-        });
-        return;
-      }
-
-      // check if stock symbol belongs to real stock
-      if (await invalidSymbol(symbol)) {
-        res
-          .status(Status.NotFound)
-          .json({ message: 'Could not find the ticker you were looking for' });
-        return;
-      }
-
-      // find or create the ticker
-      const [, newTicker] = await Tickers.findOrCreate({
-        where: { symbol, portfolioId },
-        defaults: updates,
-      });
-
-      // if ticker already in portfolio, update it
-      if (!newTicker) {
-        res.status(Status.Accepted).json({ message: 'Ticker already exists' });
-        return;
-      }
-
-      // respond with created ticker
-      res.sendStatus(Status.Created);
-    } catch (err) {
-      console.log('error at portfolio.addTicker: ', err);
-      res.sendStatus(Status.Error);
-    }
-  },
-
   // GET /portfolios/:id return a portfolio with all its tickers
   getById: async (req: Request, res: Response) => {
     const portfolioId = req.params.id;
@@ -133,6 +78,62 @@ export const portfolio = {
       res.status(Status.OK).json(portfolio);
     } catch (err) {
       console.log('error at portfolio.getPortfolioById: ', err);
+      res.sendStatus(Status.Error);
+    }
+  },
+
+  // POST /portfolios/:id add a stock ticker to a portfolio
+  addTicker: async (req: Request, res: Response) => {
+    const portfolioId = req.params.id;
+    try {
+      // check if portfolio exists
+      const exists = await Portfolios.findByPk(portfolioId);
+      if (exists === null) {
+        res.status(Status.NotFound).json({ message: 'Portfolio not found' });
+        return;
+      }
+
+      const { symbol } = req.body;
+      const updates = {
+        numShares: req.body.numShares,
+        pricePaid: req.body.pricePaid,
+        purchaseDate: req.body.purchaseDate,
+      };
+
+      // check if the request body is valid
+
+      if (await tickerIsInvalid({ symbol, ...updates })) {
+        res.status(Status.BadRequest).json({
+          message:
+            'One or more attribute of your ticker data was missing or incorrect',
+        });
+        return;
+      }
+
+      // check if stock symbol belongs to real stock
+      if (await invalidSymbol(symbol)) {
+        res
+          .status(Status.NotFound)
+          .json({ message: 'Could not find the ticker you were looking for' });
+        return;
+      }
+
+      // find or create the ticker
+      const [, newTicker] = await Tickers.findOrCreate({
+        where: { symbol, portfolioId },
+        defaults: updates,
+      });
+
+      // if ticker already in portfolio, update it
+      if (!newTicker) {
+        res.status(Status.Accepted).json({ message: 'Ticker already exists' });
+        return;
+      }
+
+      // respond with created ticker
+      res.sendStatus(Status.Created);
+    } catch (err) {
+      console.log('error at portfolio.addTicker: ', err);
       res.sendStatus(Status.Error);
     }
   },
